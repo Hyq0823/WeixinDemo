@@ -1,0 +1,45 @@
+body {
+    background-color: #eee;
+
+}
+input,.button,.title,div{
+    font-family: "Microsoft Yahei" !important;
+}
+.bar-header,.h1{
+    color: white !important;
+    background-color: #79ae42 !important;
+}
+.button{
+    border: 0;
+    width: 100%;
+    border-radius: 4px;
+    background-color:#79ae42;
+    color: white;
+}
+.title{
+    color: #fff;
+}
+.bar-header i,.col-10 i{
+    font-size: 24px;
+    color: white;
+    text-align: center;
+    margin: 0 auto;
+}
+.bar-header,.title{
+    position: relative !important;
+    line-height: normal !important;
+    margin: 0!important;
+    height: auto !important;
+}
+.button{
+    border: 0;
+    width: 100%;
+    border-radius: 4px;
+    background-color:#79ae42;
+    color: white;
+}
+.bar-footer{
+    height:65px !important;
+    bottom: 0;
+    position:absolute !important;;width: 100%; bottom:0;margin: 0 auto;padding:10px;background-color: white
+}

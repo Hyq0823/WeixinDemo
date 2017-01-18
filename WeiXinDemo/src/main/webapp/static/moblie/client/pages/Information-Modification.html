@@ -1,0 +1,77 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <title>信息修改</title>
+    <link href="../css/ionic.css" rel="stylesheet">
+    <link href="../css/main.css" rel="stylesheet">
+    <link href="../css/Personal-information.css" rel="stylesheet" >
+    <!--<script src="../js/ionic.bundle.min.js"></script>-->
+    <script src="../js/jquery-3.0.0.min.js"></script>
+    <script SRC="../js/Input-Validation.js"></script>
+</head>
+<body>
+<div class="bar bar-header" style="position: fixed">
+    <div class="col col-10">
+        <a href="Personal-information.html">
+            <i class="ion-ios-arrow-left"></i>
+        </a>
+    </div>
+    <div class="h1 title bar-header item-input-inset col col-80">信息修改</div>
+</div>
+<form action="">
+    <div class="bar bar-subheader"
+         style="height: 170px; position: relative; top:20px;
+         border-bottom: 1px solid #ccc;
+         border-top: 1px solid #ccc;text-align: center">
+        <img src="" alt="" style="border: 1px solid #ccc; width: 150px;text-align: center;border-radius: 12em;">
+    </div>
+    <div class="content has-header" style="top:40px;">
+        <div class="list">
+            <label class="item item-input">
+                <span class="input-label"><i class="fe4f4e">*</i>&nbsp;<p>姓</p><p>名&nbsp;|</p></span>
+                <input type="text" id="userNames" placeholder="请输入你的真实姓名" onblur="userName()">
+
+            </label>
+            <label class="item item-input">
+                <span class="input-label"><i class="fe4f4e">*</i>&nbsp;手机号码&nbsp;|</span>
+                <input type="text" id="phones" placeholder="请输入你的手机号码" onblur="phone()">
+            </label>
+            <label class="item item-input">
+                <span class="input-label"><i class="fe4f4e">*</i>&nbsp;身份证号&nbsp;|</span>
+                <input type="text" id="IDcards" placeholder="请输入你的身份证号" onblur="IDcard()">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">&nbsp;&nbsp;<p>性</p><p>别&nbsp;|</p></span>
+                <div class="list add-remove" style="display:flex;">
+                    <label class="item item-radio radioBorder oneIcon">
+                        <input type="radio" name="group" value="man" checked="checked">
+                        <i class="radio-icon ion-record"></i>
+                        <div class="item-content" style="color: black; font-weight: bold;font-size: 15px;">
+                            男
+                        </div>
+                    </label>
+                    <label class="item item-radio radioBorder nextIcon">
+                        <input type="radio" name="group" value="woman">
+                        <i class="radio-icon ion-record"></i>
+                        <div class="item-content" style="color: black; font-weight: bold;font-size: 15px;">
+                            女
+                        </div>
+                    </label>
+                </div>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">&nbsp;&nbsp;<p>地</p><p>址&nbsp;|</p></span>
+                <input type="text" placeholder="请填写具体地址">
+            </label>
+        </div>
+
+    </div>
+</form>
+<div class="content bar-footer" style="position: fixed">
+    <button class="button">
+        提交
+    </button>
+</div>
+</body>
+</html>

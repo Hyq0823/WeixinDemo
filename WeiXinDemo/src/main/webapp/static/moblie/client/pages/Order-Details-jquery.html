@@ -1,0 +1,611 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>订单详情</title>
+    <link href="../css/ionic.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/scrollbar.css">
+    <link rel="stylesheet" href="../css/order-details.css">
+    <link href="../css/main.css" rel="stylesheet">
+    <link href="../Flickerplate/css/flickerplate.css"  type="text/css" rel="stylesheet">
+
+    <script src="../js/angular/angular.js"></script>
+    <script src="../js/jquery-3.0.0.min.js"></script>
+    <script src="../js/iscroll.js" type="application/javascript"></script>
+    <script src="../Flickerplate/js/min/jquery-v1.10.2.min.js" type="text/javascript"></script>
+    <script src="../Flickerplate/js/min/modernizr-custom-v2.7.1.min.js" type="text/javascript"></script>
+    <script src="../Flickerplate/js/min/hammer-v2.0.3.min.js" type="text/javascript"></script>
+    <script src="../Flickerplate/js/min/flickerplate.min.js" type="text/javascript"></script>
+    <style>
+        .OrderDetailImg{
+            width: 100px;height: 100px;padding:3px;
+        }
+        .OrderDetailImg img{
+            width: 100%;
+        }
+        /*.OrderDetailImgChooseMax,.OrderDetailImgChooseMin{*/
+            /*width:100%;height:auto;*/
+            /*position:fixed;top:0;left:0;bottom:10%;*/
+            /*z-index:1500;*/
+            /*padding-top:100%;*/
+            /*padding-bottom:50%;*/
+            /*background:rgba(255,255,255,0.8);*/
+        /*}*/
+        .OrderDetailImgChooseMin{height:10%;}
+        .flexxxxx{float:left;}
+        .input-label>span{
+            margin-left:28px;
+        }
+        .input-label {
+            display: table;
+            padding: 7px 10px 7px 0;
+            max-width: 200px;
+            width: 35%;
+            color: #71b32D;
+            font-size: 14px;
+        }
+
+
+
+
+        element.style {
+        }
+        .Collection-area .col label input {
+            padding-right: 0;
+            font-size: 12px;
+        }
+        input[readonly]:not(.cloned-text-input) {
+            background-color: #fff;
+        }
+        input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.cloned-text-input), textarea[readonly]:not(.cloned-text-input), select[readonly] {
+            background-color: #f8f8f8;
+            cursor: not-allowed;
+        }
+        .item input {
+            padding-left: 10px;
+            font-size: 12px;
+        }
+        textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {
+            border: 0;
+        }
+        .item-input input, .item-input textarea {
+            width: 100%;
+        }
+         input[type="text"]{
+            display: block;
+            padding-top: 7px;
+            padding-left: 0;
+            height: 34px;
+            color: #111;
+            vertical-align: middle;
+            font-size: 14px;
+            line-height: 16px;
+        }
+        input[readonly]:not(.cloned-text-input) {
+            background-color: #fff;
+        }
+        #deadAnimals .row,.Basic-Information-On-Farms .row{
+            padding: 0;
+        }
+
+
+    </style>
+    <script>
+        $(function(){
+            $('.flicker-example').flickerplate(
+                    {
+                        auto_flick 				: true,
+                        auto_flick_delay 		: 8,
+                        flick_animation 		: 'transform-slide'
+                    });
+        });
+    </script>
+    <link href="../Flickerplate/css/demo.css"  type="text/css" rel="stylesheet">
+
+</head>
+<body ng-app="myApp" ng-controller="ctx">
+<!--<div class="wrap">
+    <div class="flicker-example">
+        <ul>
+            <li class="img" data-background="../img/flicker-1.jpg">
+                &lt;!&ndash;<div class="flick-title">Flickerplate Is Working</div>&ndash;&gt;
+                &lt;!&ndash;<div class="flick-sub-text">Heaven forbid this package you downloaded is broken. That wouldn't be embarrassing at all.</div>&ndash;&gt;
+            </li>
+
+            <li class="img" data-background="../img/flicker-2.jpg">
+                &lt;!&ndash;<div class="flick-title">Editable via Javascript or CSS</div>&ndash;&gt;
+                &lt;!&ndash;<div class="flick-sub-text">Take a look at the extensive documentation to see how you can change the settings in multiple ways.</div>&ndash;&gt;
+            </li>
+
+            &lt;!&ndash;<li data-background="../img/flicker-3.jpg">&ndash;&gt;
+            &lt;!&ndash;&lt;!&ndash;<div class="flick-title">Touch Enabled Through the Hammer.js Library</div>&ndash;&gt;&ndash;&gt;
+            &lt;!&ndash;&lt;!&ndash;<div class="flick-sub-text"> Hammer.js is a great touch library that has been included as part of the Flickerplate package.</div>&ndash;&gt;&ndash;&gt;
+            &lt;!&ndash;</li>&ndash;&gt;
+
+        </ul>
+
+    </div>
+</div>-->
+<div class="father">
+    <div class="imgSee">
+        <div>
+            <img src="" alt=""/>
+        </div>
+    </div>
+</div>
+
+
+<div>
+    <!--header-->
+    <div class="bar bar-header row" style="">
+        <a class="col col-10" href="Order-List.html" style="color:white !important;">
+            <i class="ion-ios-arrow-left"></i>
+        </a>
+        <div class="h1 title bar-header item-input-inset col col-80">订单详情</div>
+    </div>
+    <!--page info-->
+    <div id="OrderDetailsForm">
+        <div class="content has-header">
+            <input type="hidden" id="orderDetailsId" value="data.billId"/>
+            <input type="hidden" class="orderstatus" value="data.billState"/>
+            <input type="hidden" class="orderscore" value="data.score +"/>
+            <div class="list Collection">
+                <label class="item item-input">
+                    <div class="row">
+                        <div class="col col-25">
+                            <span class="input-label">收集车辆</span>
+                        </div>
+                        <div class="col">
+                            <input type="text" readonly id="Collection-of-vehicles" placeholder="" ng-value="clctCarNo"/>
+                        </div>
+                    </div>
+                </label>
+                <label class="item item-input">
+                    <div class="row">
+                        <div class="col col-25">
+                            <span class="input-label">收集人员</span>
+                        </div>
+                        <div class="col">
+                            <input type="text" readonly id="Collect-personnel" placeholder="" ng-value="clctBy "/>
+                        </div>
+                    </div>
+
+                </label>
+                <label class="item item-input">
+                    <div class="row">
+                        <div class="col col-25">
+                            <span class="input-label">收集时间</span>
+                        </div>
+                        <div class="col">
+                            <input type="text" readonly id="Collection-time" placeholder="" ng-value="endTime"/>
+                        </div>
+                    </div>
+                </label>
+
+                <div style="background: #fff;border-top:1px solid #ddd;border-bottom:1px solid #ddd;padding-top:10px;padding-bottom: 10px;">
+                    <div class="row">
+                        <div class="col col-25">
+                            <div  style="border: none;padding-left:12px;font-weight: 500;margin-bottom:0;font-size: 14px;color:#71b32b">
+                                收集地点
+                            </div>
+                        </div>
+                        <div class="col col-75" style="padding-left:12px ;padding-right: 10px" ng-model="clctAddr">{{clctAddr}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content has-header" id="deadAnimals" style="top:30px;">
+            <label class="item item-input">
+                <div class="row">
+                    <div class="col"><span class="input-label"style="font-size:16px;font-weight: 600" >病死动物名称及数量(重量)</span></div>
+                </div>
+
+            </label>
+            <label class="item item-input ">
+                <div class="row">
+                    <div class="col col-25">
+                        <span class="input-label">种<span></span>类</span>
+                    </div>
+                    <div class="col">
+                        <input type="text" readonly placeholder=" " ng-value='animalType'>
+                    </div>
+                </div>
+            </label>
+            <label class="item item-input">
+                <div class="row">
+                    <div class=" col col-25">
+                        <span class="input-label">重<span></span>量</span>
+                    </div>
+                    <div class="col">
+                        <input type="text" readonly placeholder=" " ng-value='weight'>
+                    </div>
+                </div>
+            </label>
+            <label class="item item-input">
+                <div class="row">
+                    <div class="col col-25">
+                        <span class="input-label">数<span></span>量</span>
+                    </div>
+                    <div class="col">
+                        <input type="text" readonly placeholder=" " ng-value='count'>
+                    </div>
+                </div>
+            </label>
+            <label class="item item-input">
+                <div class="row">
+                    <div class="col col-25">
+                        <span class="input-label">耳<span></span>标</span>
+                    </div>
+                    <div class="col">
+                        <input type="text" readonly placeholder=" " ng-value='earNo'>
+                    </div>
+                </div>
+            </label>
+        </div>
+        <div class="content has-header">
+            <div class="item item-input" style=" display: inherit;padding-right: 11px;">
+                <span class="input-label" style="width: auto">照片<small>(点击照片可放大)</small></span>
+
+                <div class="container">
+                    <div id="row" class="row" style="padding-left: 0;padding-right: 0">
+                        <div class="col col-50" style="padding: 0">
+                            <img src="../img/Temporary-Image-Files/1.jpg" alt="" class="OrderDetailImgChooseMin" style="width: 100%;padding: 10px 10px 10px 0px"/>
+                        </div>
+                        <div class="col" style="padding: 0">
+                            <img src="../img/flicker-2.jpg" alt="" class="OrderDetailImgChooseMin" style="width: 100%;padding: 10px 0px 10px 10px"/>
+                        </div>
+                    </div>
+                    <div class="button">查看全部图片</div>
+                </div>
+            </div>
+        </div>
+        <div class="father">
+            <div class="imgSee">
+                <div>
+                    <img src="" alt=""/>
+                </div>
+            </div>
+        </div>
+        <div class="content has-header Basic-Information-On-Farms">
+            <label class="item item-input">
+                <div class="row">
+                    <div class="col">
+                        <span class="input-label" style="font-size:16px;font-weight: 600">养殖场(户)基本信息</span>
+                    </div>
+                </div>
+            </label>
+            <label class="item item-input">
+                <div class="row">
+                    <div class="col col-25 ">
+                        <span class="input-label">姓<span></span>名</span>
+                    </div>
+                    <div class="col">
+                        <input type="text" readonly placeholder=" " ng-value="custName">
+                    </div>
+                </div>
+            </label>
+            <label  class="item item-input">
+                <div class="row">
+                    <div class="col col-25">
+                        <span class="input-label">电话号码</span>
+                    </div>
+                    <div class="col">
+                        <input type="text" readonly placeholder=" " ng-value ="mobile "  >
+                    </div>
+                </div>
+            </label>
+
+            <div style="background: #fff;border-top:1px solid #ddd;border-bottom:1px solid #ddd;padding-top:10px;padding-bottom: 10px;">
+                <div class="row">
+                    <div class="col col-25">
+                        <div  style="border: none;padding-left:12px;font-weight: 500;margin-bottom:0;font-size: 14px;color:#71b32b">
+                            养殖地点
+                        </div>
+                    </div>
+                    <div class="col col-75" style="padding-left:12px ;padding-right: 10px" ng-model="clctAddr">{{clctAddr}}
+                    </div>
+                </div>
+            </div>
+
+            <label  class="item item-input">
+                <div class="row">
+                    <div class="col col-25">
+                        <span class="input-label">身份证号</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <input type="text" readonly placeholder=" " ng-value = "idCardNo" />
+                </div>
+            </label>
+            <label class="item item-input">
+                <div class="row">
+                    <div class="col">
+                        <span class="input-label">银行卡号</span>
+                    </div>
+                    <div class="col">
+                        <input type="text" readonly placeholder=" " ng-value="bankAcctNum"/>
+                    </div>
+                </div>
+            </label>
+            <label  class="item item-input">
+                <div class="row">
+                    <div class="col col-25">
+                        <span class="input-label">存<span style="margin-left: 7px;"></span>栏<span style="margin-left: 7px;"></span>量</span>
+                    </div>
+                    <div class="col">
+                        <input type="text" readonly placeholder=" " ng-value =" currentAmount" />
+
+                    </div>
+                </div>
+            </label>
+            <label class="item item-input">
+                <div class="row">
+                    <div class="col col-25">
+                        <span class="input-label">是否消毒</span>
+                    </div>
+                    <div class="col">
+                        <input type="text" readonly placeholder=" " ng-value="isDisinfectant "/>
+                    </div>
+                </div>
+            </label>
+            <label class="item item-input" style="height:50px;">
+            </label>
+        </div>
+    </div>
+    <!--footer-->
+    <!--<div class="bar bar-footer content" id="Evaluation">
+           <button class="button">评价</button>
+    </div>-->
+</div>
+
+</body>
+
+<script>
+    (function(){
+        $("#row>div").css({"padding":"10px","padding-left":"0"});
+    })();
+var id=window.location.href.split("=")[1];
+
+var app=angular.module("myApp",[]);
+var url = "/KNERP/a/weixin/bill/billInfo";
+app.controller("ctx",function($scope,$http){
+
+        $http({method:"post",url:url,params:{id:id}}).success(function (data) {
+            console.log(data);
+            $scope.clctCarNo=data.clctCarNo;
+            $scope.clctBy =data.clctBy ;
+            $scope.endTime =data.endTime ;
+            $scope.clctAddr =data.clctAddr;
+            $scope.custName =data.custName;
+            $scope.mobile =data.mobile;
+            $scope.animalType=data.list[0].animalType;
+            $scope.weight=data.list[0].weight;
+            $scope.count=data.list[0].count;
+            $scope.earNo=data.list[0].earNo;
+            console.log(data.list[0]);
+            console.log(data.billState)
+//
+        });
+});
+
+
+
+
+
+$(function(){
+
+
+
+        var id = window.location.href.split("=");
+        /*
+         Backstage data transmission
+         */
+        console.log(id[1]);
+        $.ajax({
+            url:'/KNERP/a/weixin/bill/billInfo',
+            data: {
+                'id':id[1]
+            },
+            type:'post',
+            datatype:'json',
+            success:function(data){
+                data = JSON.parse(data);
+
+                //判断状态显示隐藏
+                var deadAnimal = data.list;
+                var orderscore = $('.orderscore').val();
+                if(data.score > 0){
+                    $(".bar-footer .button").addClass("beenEvaluated").text('已评价');
+                    $(".bar-footer").attr("id","beenEvaluated");
+                }
+
+                $('#gallery img').click(function(){
+                    $('body').append(ooo);
+                });
+                $('body').find('label input').each(function(index,element){
+                    if($(element).val() == "undefined"){
+                        $(element).val(" ")
+                    }
+                });
+                if(orderscore > 0){
+                    $(".bar-footer .button").addClass("beenEvaluated").text('已评价');
+                    $(".bar-footer").attr("id","beenEvaluated");
+                }
+                /*
+                 Through the data to determine display or hide
+                 */
+                if (data.billState == '0' ||data.billState == '2'||data.billState == '6' ||data.billState == '7' ||data.billState == '8' ){
+
+                    $('#Evaluation').css('display','none');
+                }
+                //点击评价跳转
+                $('#Evaluation').click(function(){
+                    var ids = $('#orderDetailsId').val();
+                    window.location.href = 'Order-Evaluation.html?id=' + ids;
+                });
+                 $('.OrderDetailImgChooseMin').click(function(){
+                  var imgSrc=  $(this).attr('src');
+                      if($(".father").is(":hidden"))  {
+                          $(".father").slideDown(500);
+                      }
+                     $(".imgSee img").attr("src",imgSrc).css({"z-index":"1600"});
+                     $(".father~div").slideUp(1)
+                });
+                $(".father").click(function(){
+                    $(this).css("display","none");
+                    $(".imgSee img").attr("src","");
+                    $(".father~div").slideDown(200);
+                })
+
+                $(".container img").each(function(i){
+                    var srcIMG=$(this).attr("src");
+                    $("li.img").eq(i).attr("data-background",srcIMG).css("background-image","url("+srcIMG+")")
+                })
+
+            }
+        });
+//        function theDeadAnimalList(deadAnimal){
+//            var deadAnimalList = '';
+//            for (var a = 0;a<deadAnimal.length; a++){
+//                deadAnimalList = deadAnimalList +
+//                    '<label class="item item-input ">' +
+//                    '<span class="input-label">种<span></span>类</span>' +
+//                    '<input type="text" readonly placeholder=" " value = '+ deadAnimal[a].animalType +'>' +
+//                    '</label>' +
+//                    '<label class="item item-input">' +
+//                    '<span class="input-label">重<span></span>量</span>' +
+//                    '<input type="text" readonly placeholder=" " value = '+ deadAnimal[a].weight +'>' +
+//                    '</label>' +
+//                    '<label class="item item-input">' +
+//                    '<span class="input-label">数<span></span>量</span>'
+//                    '<input type="text" readonly placeholder=" " value = '+ deadAnimal[a].count +'>' +
+//                    '</label>' +
+//                    '<label class="item item-input">' +
+//                    '<span class="input-label">耳<span></span>标</span>' +
+//                    '<input type="text" readonly placeholder=" " value = '+ deadAnimal[a].earNo +'>' +
+//                    '</label>';
+//
+//            }
+//            return deadAnimalList;
+//        }
+
+      /*  function detailsForm(data) {
+            var OrderDetails;
+            OrderDetails =
+                    '<div class="content has-header">' +
+                    '<input type="hidden" id = "orderDetailsId" value=' + data.billId + ' />' +
+                    '<input type="hidden" class = "orderstatus" value=' + data.billState + '  />' +
+                    '<input type="hidden" class = "orderscore" value=' + data.score + '  />' +
+                    '<div class="list Collection">' +
+                    '<label class="item item-input">' +
+                    '<span class="input-label">收集车辆</span>' +
+                    '<input type="text" readonly id="Collection-of-vehicles" placeholder="" value = ' + data.clctCarNo + '>' +
+                    '</label>' +
+                    '<label class="item item-input">' +
+                    '<span class="input-label">收集人员</span>' +
+                    '<input type="text" readonly id="Collect-personnel" placeholder="" value = ' + data.clctBy + '>' +
+                    '</label>' +
+                    '<label class="item item-input">' +
+                    '<span class="input-label">收集时间</span>' +
+                    '<input type="text" readonly id="Collection-time" placeholder="" value = ' + data.endTime + '>' +
+                    '</label>' +
+                    '<div style="background: #fff;border-top:1px solid #ddd;border-bottom:1px solid #ddd;">' +
+                    '<div class="row">' +
+                    '<div class="col col-25">' +
+                    '<label class="item item-input" style="border: none;padding-left:12px;font-weight: 500;margin-bottom:0;font-size: 14px;">' +
+                    '<span class="input-label">收集地点</span>'+
+                    '</label>' +
+                    '</div>' +
+                    '<div class="col"></div>' +
+                    '</div>' +
+                    '<div class="row Collection-area">' +
+                    '<div class="col">' +
+                    '<label class="item item-input" style="border: none;margin-bottom:0;">' +
+                    '<span class="input-label">镇(乡)/村/组</span>' +
+                    '<input type="text" readonly id="town" placeholder=" " value = ' + data.clctAddr + '>' +
+                    '</label>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="content has-header" id="deadAnimals"style="top:30px;">' +
+                    '<label class="item item-input">' +
+                    '<span class="input-label">病死动物名称及数量(重量)</span>' +
+                    '</label>' +
+                    '</div>' +
+                    '<div class="content has-header">' +
+                    '<div class="item item-input" style=" display: inherit;">' +
+                    '<span class="input-label" style="width: auto">照片<small>(点击照片可放大)</small></span>' +
+                    '<label class="flexxxxx" style="display: flex;">' +
+                    '<div class="container">' +
+                    '<div class="thumbnails" id="gallery">' +
+                    '<img src="../img/Temporary-Image-Files/1.jpg" alt="" class="OrderDetailImgChooseMin"/></a>' +
+                    '<img src="../img/Temporary-Image-Files/1.jpg" alt="" class="OrderDetailImgChooseMin"/></a>' +
+                    '<img src="../img/Temporary-Image-Files/1.jpg" alt="" class="OrderDetailImgChooseMin"/></a>' +
+                    '</div>' +
+                    '</div>' +
+                    '</label>' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="content has-header Basic-Information-On-Farms">' +
+                    '<label class="item item-input">' +
+                    '<span class="input-label" style="font-size:16px;">养殖场(户)基本信息</span>' +
+                    '</label>' +
+                    '<label class="item item-input">' +
+                    '<span class="input-label">姓名</span>' +
+                    '<input type="text" readonly placeholder=" " value = ' + data.custName + '>' +
+                    '</label>' +
+                    '<label  class="item item-input">' +
+                    '<span class="input-label">电话号码</span>' +
+                    '<input type="text" readonly placeholder=" " value = ' + data.mobile + '>' +
+                    '</label>' +
+                    '<div style="background: #fff;">' +
+                    '<div class="row" style="padding-bottom: 0; padding-left:0;">' +
+                    '<div class="col col-75">' +
+                    '<label class="item item-input" style="border: none;padding-left:12px;font-weight: 500;font-size: 16px;">' +
+                    '养殖地点' +
+                    '</label>' +
+                    '</div>' +
+                    '<div class="col"></div>' +
+                    '</div>' +
+                    '<div class="row Collection-area" style="padding-left:0;">' +
+                    '<div class="col">' +
+                    '<label class="item item-input" style="border: none;">' +
+                    '<span class="input-label">镇(乡)/村/组</span>' +
+                    '<input type="text" readonly id="townBreeding" placeholder=" " value = ' + data.address + '>' +
+                    '</label>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>' +
+                    '<label  class="item item-input">' +
+                    '<span class="input-label">身份证号</span>' +
+                    '<input type="text" readonly placeholder=" " value = ' + data.idCardNo + '>' +
+                    '</label>' +
+                    '<label  class="item item-input">' +
+                    '<span class="input-label">开户行及一卡通号</span>' +
+                    '<input type="text" readonly placeholder=" " value = ' + data.bankAcctNum + '>' +
+                    '</label>' +
+                    '<label  class="item item-input">' +
+                    '<span class="input-label">存栏量</span>' +
+                    '<input type="text" readonly placeholder=" " value = ' + data.currentAmount + '>' +
+                    '</label>' +
+                    '<label  class="item item-input">' +
+                    '<span class="input-label">是否消毒</span>' +
+                    '<input type="text" readonly placeholder=" " value = ' + data.isDisinfectant + '>' +
+                    '</label>' +
+                    '<label  class="item item-input" style="height:50px;">' +
+
+                    '</label>' +
+                    '</div>';
+
+
+            return OrderDetails;
+        }*/
+
+    });
+</script>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>订单列表</title>
+    <link rel="stylesheet" type="text/css" href="../css/scrollbar.css">
+    <script type="application/javascript" src="../js/iscroll.js"></script>
+    <link href="../css/main.css" rel="stylesheet">
+    <link href="../css/Personal-information.css" rel="stylesheet" >
+    <link href="../css/ionic.css" rel="stylesheet">
+    <link href="../css/Order-List.css" rel="stylesheet">
+    <script src="../js/ionic.bundle.min.js"></script>
+    <script src="../js/jquery-3.0.0.js"></script>
+</head>
+<body>
+<!--header-->
+<div class="bar bar-header row">
+    <div class="col col-10">
+    </div>
+    <div class="h1 title bar-header item-input-inset col col-80">订单列表</div>
+    <div class="col col-10">
+        <a class="Create-A-order" href="Create-A-order.html">
+            <i class="ion-ios-plus-outline"></i>
+        </a>
+    </div>
+</div>
+<!--page info-->
+<div id="wrapper">
+    <div id="scroller">
+        <div id="pullDown">
+            <span class="pullDownIcon"></span><span class="pullDownLabel">下拉刷新...</span>
+        </div>
+
+        <ul id="thelist">
+            <li>
+            </li>
+        </ul>
+        <div id="pullUp">
+            <span class="pullUpIcon"></span><span class="pullUpLabel">上拉加载更多...</span>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript">
+
+    $(function(){
+        /*
+        * After the entry into the implementation of the page
+        */
+
+        userId="43ca762f178f46778755481fd574bc86";
+        $(".Create-A-order").attr("href","Create-A-order.html?id="+userId);
+        pullDownAction(function(){
+    		$('.card').on('click',function(){
+                var id = $(this).find('#orderId').val();
+                window.location.href = 'Order-Details.html?id=' + id;
+            });
+    	});
+    	
+    	/* pullUpAction(function(){
+    		$('.card').on('click',function(){
+                var id = $(this).find('#orderId').val();
+                window.location.href = 'Order-Details.html?id=' + id;
+            });
+    	}); */
+    });
+    var myScroll,
+        pullDownEl, pullDownOffset,
+        pullUpEl, pullUpOffset;
+    /*
+    *Digital conversion
+    */
+    var stateNum = {'_0':'待确认','_1':'已确认','_2':'待收集','_3':'已收集','_4':'已入厂','_5':'已入站','_6':'已完成','_7':'已撤销','_8':'转派中'};
+    /**
+     * 下拉刷新 （自定义实现此方法）
+     * myScroll.refresh();		// 数据加载完成后，调用界面更新方法
+     */
+    function inputLabelSpan(){
+        $('body').find('.input-label span').each(function(index,element){
+            if($(element).text() == "undefined"){
+                $(element).text(" ")
+            }
+        });
+    }
+    function billStateS(){
+        $('body').find('.billState').each(function(index,element){
+            if($(element).text() == "undefined"){
+                $(element).text(" ")
+            }
+        })
+    }
+    /* 下拉刷新 */
+    function pullDownAction (list) {
+    	$('.card').remove();
+        var d = new Date().toUTCString();
+        $.ajax({
+            url:'/KNERP/a/weixin/bill/findBillList',
+            data: d,
+            type:'post',
+            datatype:'json',
+            success:function(data){	// <-- Simulate network congestion, remove setTimeout from production!
+                var el, li;
+                data = JSON.parse(data);
+                el = document.getElementById('thelist');
+                for (var i=0; i < data.length; i++) {
+                	data[i].endTime = data[i].endTime.split(" ")[0];
+                	data[i].billState = eval("stateNum._"+data[i].billState);
+                    li = document.createElement('li');
+                    li.innerHTML = '<div class="card" style="">' +
+                        '<div class="row">' +
+                        '<label class="item item-input col col-75">' +
+                        '<input type="hidden" id = "orderId" value='+ data[i].id +' />'+
+                        '<input type="hidden" class = "createDate" value=\"'+ data[i].createDate +'\"/>'+
+                        '<span class="input-label">订单号 : <span>'+  data[i].billCode  + '</span></span>' +
+                        '</label>' +
+                        '<label class="item item-input col col-25">' +
+                        '<div style="" class="button-outline billState">'+ data[i].billState + '</div>' +
+                        '</label>' +
+                        '</div>' +
+                        '<div class="row">' +
+                        '<label class="item item-input col col-60">' +
+                        '<div class="input-label">收集日期 :<span>'+ data[i].endTime  + '</span> </div>' +
+                        '</label>' +
+                        '<label class="item item-input col col-40">' +
+                        '<span class="input-label">收集人 : <span>'+  data[i].clctBy  + '</span></span>' +
+                        '</label>' +
+                        '</div>' +
+                        '</div>';  
+                    el.appendChild(li, el.childNodes[0]);
+                    inputLabelSpan();
+                    billStateS();
+                }
+                myScroll.refresh();		//数据加载完成后，调用界面更新方法   Remember to refresh when contents are loaded (ie: on ajax completion)
+                list();
+            }
+        });
+       
+        // <-- Simulate network congestion, remove setTimeout from production!
+    }
+
+    /**
+     * 加载更多 （自定义实现此方法）
+     * myScroll.refresh();		// 数据加载完成后，调用界面更新方法
+     */
+     
+    function pullUpAction (list1) {
+    	 var createDate = $('#thelist li:last-child').find('.createDate').val();
+    	 console.log(createDate)
+        $.ajax({
+            url:'/KNERP/a/weixin/bill/findBillList',
+            data: {
+            	'createDate':createDate
+            },
+            type:'post',
+            datatype:'json',
+            success:function(data){	// <-- Simulate network congestion, remove setTimeout from production!
+                var el, li;
+                data = JSON.parse(data);
+                console.log(data);
+                el = document.getElementById('thelist');
+                for (var i = 0; i < data.length; i++) {
+                	data[i].endTime = data[i].endTime.split(" ")[0];
+                	data[i].billState = eval("stateNum._"+data[i].billState);
+                    li = document.createElement('li');
+                    li.innerHTML =
+                        '<div class="card" style="">' +
+                        '<div class="row">' +
+                        '<label class="item item-input col col-75">' +
+                        '<input type="hidden" class = "orderId" value='+ data[i].id +' />'+
+                        '<input type="hidden" class = "createDate" value=\"'+ data[i].createDate +'\"/>'+
+                        '<span class="input-label">订单号 : <span>'+  data[i].billCode  + '</span></span>' +
+                        '</label>' +
+                        '<label class="item item-input col col-25">' +
+                        '<div style="" class="button-outline billState">'+ data[i].billState + '</div>' +
+                        '</label>' +
+                        '</div>' +
+                        '<div class="row">' +
+                        '<label class="item item-input col col-60">' +
+                        '<span class="input-label">收集日期 : <span>'+  data[i].endTime  + '</span></span>' +
+                        '</label>' +
+                        '<label class="item item-input col col-40">' +
+                        '<span class="input-label">收集人 : <span>'+  data[i].clctBy  + '</span></span>' +
+                        '</label>' +
+                        '</div>' +
+                        '</div>';
+                    el.appendChild(li, el.childNodes[0]);
+                    inputLabelSpan();
+                    billStateS();
+                }
+                myScroll.refresh();		// 数据加载完成后，调用界面更新方法 Remember to refresh when contents are loaded (ie: on ajax completion)
+            	list1();
+            }
+        });
+    }
+
+    /**
+     * 初始化iScroll控件
+     */
+    function loaded() {
+        pullDownEl = document.getElementById('pullDown');
+        pullDownOffset = pullDownEl.offsetHeight;
+        pullUpEl = document.getElementById('pullUp');
+        pullUpOffset = pullUpEl.offsetHeight;
+
+        myScroll = new iScroll('wrapper', {
+            scrollbarClass: 'myScrollbar', /* 重要样式 */
+            useTransition: true, /* 此属性不知用意，本人从true改为false */
+            topOffset: pullDownOffset,
+            onRefresh: function () {
+                if (pullDownEl.className.match('loading')) {
+                    pullDownEl.className = '';
+                    pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+                } else if (pullUpEl.className.match('loading')) {
+                    pullUpEl.className = '';
+                    pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+                }
+            },
+            onScrollMove: function () {
+                if (this.y > 5 && !pullDownEl.className.match('flip')) {
+                    pullDownEl.className = 'flip';
+                    pullDownEl.querySelector('.pullDownLabel').innerHTML = '松手开始更新...';
+                    this.minScrollY = 0;
+                } else if (this.y < 5 && pullDownEl.className.match('flip')) {
+                    pullDownEl.className = '';
+                    pullDownEl.querySelector('.pullDownLabel').innerHTML = '下拉刷新...';
+                    this.minScrollY = -pullDownOffset;
+                } else if (this.y < (this.maxScrollY - 5) && !pullUpEl.className.match('flip')) {
+                    pullUpEl.className = 'flip';
+                    pullUpEl.querySelector('.pullUpLabel').innerHTML = '松手开始更新...';
+                    this.maxScrollY = this.maxScrollY;
+                } else if (this.y > (this.maxScrollY + 5) && pullUpEl.className.match('flip')) {
+                    pullUpEl.className = '';
+                    pullUpEl.querySelector('.pullUpLabel').innerHTML = '上拉加载更多...';
+                    this.maxScrollY = pullUpOffset;
+                }
+            },
+            onScrollEnd: function () {
+                if (pullDownEl.className.match('flip')) {
+                    pullDownEl.className = 'loading';
+                    pullDownEl.querySelector('.pullDownLabel').innerHTML = '加载中...';
+                    pullDownAction(function(){
+                    	$('.card').on('click',function(){
+                            var id = $(this).find('#orderId').val();
+                            window.location.href = 'Order-Details.html?id=' + id;
+                        });
+                	});	// Execute custom function (ajax call?)
+                } else if (pullUpEl.className.match('flip')) {
+                    pullUpEl.className = 'loading';
+                    pullUpEl.querySelector('.pullUpLabel').innerHTML = '加载中...';
+                    pullUpAction(function(){
+                		$('.card').on('click',function(){
+                            var id = $(this).find('#orderId').val();
+                            window.location.href = 'Order-Details.html?id=' + id;
+                        });
+                	});	// Execute custom function (ajax call?)
+                }
+            }
+        });
+
+        setTimeout(function () { document.getElementById('wrapper').style.left = '0'; }, 800);
+    }
+
+    //初始化绑定iScroll控件
+    document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+    document.addEventListener('DOMContentLoaded', loaded, false);
+
+</script>
+</html>

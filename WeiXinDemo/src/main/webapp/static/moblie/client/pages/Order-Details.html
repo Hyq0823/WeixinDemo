@@ -1,0 +1,811 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>订单详情</title>
+    <link href="../css/ionic.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/scrollbar.css">
+    <link rel="stylesheet" href="../css/order-details.css">
+    <link href="../css/main.css" rel="stylesheet">
+    <link href="../css/photoswipe/photoswipe.css">
+    <link href="../css/photoswipe/default-skin.css">
+    <link href="../css/photoswipe/photoswipe.css" rel="stylesheet">
+    <link href="../css/photoswipe/default-skin.css" rel="stylesheet">
+    <script src="../js/photoswipe/watch.js"></script>
+    <script src="../js/photoswipe/photo.min.js"></script>
+    <script src="../js/photoswipe/photoswipe-ui-default.min.js"></script>
+    <script src="../js/photoswipe/iodsse.js"></script>
+    <script src="../js/jquery-3.0.0.min.js"></script>
+    <script src="../js/iscroll.js" type="application/javascript"></script>
+    <script src="../js/Vue.js"></script>
+    <script src="../js/vue-resource.js"></script>
+    <script src="../js/angular/angular.js"></script>
+    <script src="../js/photoswipe/photo.min.js"></script>
+    <script src="../js/photoswipe/photoswipe-ui-default.min.js"></script>
+
+    <style>
+        .breadword {
+            max-width: 120px !important;
+            word-break: break-all; /*支持IE，chrome，FF不支持*/
+            word-wrap: break-word; /*支持IE，chrome，FF*/
+            display: block;
+            padding: 7px 3px 7px 0;
+        }
+
+        .breadwordInline {
+            padding: 3px 0 4px 15px;
+            background: #fff;
+            display: inline-flex;
+            width: 100%;
+        }
+
+        .breadwordInline input {
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .OrderDetailImg {
+            width: 100px;
+            height: 100px;
+            padding: 3px;
+        }
+
+        .OrderDetailImg img {
+            width: 100%
+        }
+
+        .OrderDetailImgChooseMin {
+            height: 10%;
+            float: left;
+            margin: 5px 5px 5px 0
+        }
+        .input-label {
+            display: table;
+            padding: 7px 10px 7px 0px;
+            max-width: 200px;
+            width: 35%;
+            color: #71b32b;
+            font-size: 14px;
+        }      .Collection-area .col label input {
+                   padding-right: 0;
+                   font-size: 12px;
+               }
+        input[readonly]:not(.cloned-text-input) {
+            background-color: #fff;
+        }
+        input[disabled], select[disabled], textarea[disabled], input[readonly]:not(.cloned-text-input), textarea[readonly]:not(.cloned-text-input), select[readonly] {
+            background-color: #f8f8f8;
+            cursor: not-allowed;
+        }
+        .item input {
+            padding-left: 10px;
+            font-size: 12px;
+        }
+        textarea, input[type="text"], input[type="password"], input[type="datetime"], input[type="datetime-local"], input[type="date"], input[type="month"], input[type="time"], input[type="week"], input[type="number"], input[type="email"], input[type="url"], input[type="search"], input[type="tel"], input[type="color"] {
+            border: 0;
+        }
+        .item-input input, .item-input textarea {
+            width: 100%;
+        }
+        input[type="text"]{
+            display: block;
+            padding-top: 7px;
+            padding-left: 0;
+            height: 34px;
+            color: #111;
+            vertical-align: middle;
+            font-size: 14px;
+            line-height: 16px;
+        }
+        input[readonly]:not(.cloned-text-input) {
+            background-color: #fff;
+        }
+        #deadAnimals .row,.Basic-Information-On-Farms .row{
+            padding: 0;
+        }
+
+        .pswp__zoom-wrap {
+            -ms-touch-action: none;
+            touch-action: none;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            /*position: fixed;*/
+        }
+    </style>
+</head>
+<body ng-app="myApp" ng-controller="ctx">
+<div id="OrderDetailsForm">
+    <!--header-->
+    <div class="bar bar-header row" style="">
+        <a class="col col-10" href="Order-List.html" style="color:white !important;">
+            <i class="ion-ios-arrow-left"></i>
+        </a>
+        <div class="h1 title bar-header item-input-inset col col-80">订单详情</div>
+    </div>
+    <!--page info-->
+    <div>
+        <div class="content has-header">
+            <input type="hidden" id="orderDetailsId" readonly v-model="OrderDetailsData.billId"/>
+            <input type="hidden" class="orderstatus" readonly v-model="OrderDetailsData.billState"/>
+            <input type="hidden" class="orderscore" readonly v-model="OrderDetailsData.score"/>
+
+            <div class="list Collection">
+                <label class="item item-input">
+                    <div class="row">
+                        <div class="col col-25">
+                            <span class="input-label">收集车辆</span>
+                        </div>
+                        <div class="col">
+                            <input type="text" readonly id="Collection-of-vehicles" placeholder="" ng-value="clctCarNo"/>
+                        </div>
+                    </div>
+                </label>
+                <label class="item item-input">
+                    <div class="row">
+                        <div class="col col-25">
+                            <span class="input-label">收集人员</span>
+                        </div>
+                        <div class="col">
+                            <input type="text" readonly id="Collect-personnel" placeholder="" ng-value="clctBy "/>
+                        </div>
+                    </div>
+                </label>
+                <label class="item item-input">
+                    <div class="row">
+                        <div class="col col-25">
+                            <span class="input-label">收集时间</span>
+                        </div>
+                        <div class="col">
+                            <input type="text" readonly id="Collection-time" placeholder="" ng-value="endTime"/>
+                        </div>
+                    </div>
+                </label>
+                <div style="background: #fff;border-top:1px solid #ddd;border-bottom:1px solid #ddd;padding-top:10px;padding-bottom: 10px;">
+                    <div class="row">
+                        <div class="col col-25">
+                            <div  style="border: none;padding-left:12px;font-weight: 500;margin-bottom:0;font-size: 14px;color:#71b32b">
+                                收集地点
+                            </div>
+                        </div>
+                        <div class="col col-75" style="padding-left:12px ;padding-right: 10px" ng-model="clctAddr">{{clctAddr}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content has-header" id="deadAnimals" style="top:30px;">
+            <label class="item item-input">
+                <div class="row">
+                    <div class="col"><span class="input-label"style="font-size:16px;font-weight: 600" >病死动物名称及数量(重量)</span></div>
+                </div>
+
+            </label>
+            <label class="item item-input ">
+                <div class="row">
+                    <div class="col col-25">
+                        <span class="input-label">种<span></span>类</span>
+                    </div>
+                    <div class="col">
+                        <input type="text" readonly placeholder=" " ng-value='animalType'>
+                    </div>
+                </div>
+            </label>
+            <label class="item item-input">
+                <div class="row">
+                    <div class=" col col-25">
+                        <span class="input-label">重<span></span>量</span>
+                    </div>
+                    <div class="col">
+                        <input type="text" readonly placeholder=" " ng-value='weight'>
+                    </div>
+                </div>
+            </label>
+            <label class="item item-input">
+                <div class="row">
+                    <div class="col col-25">
+                        <span class="input-label">数<span></span>量</span>
+                    </div>
+                    <div class="col">
+                        <input type="text" readonly placeholder=" " ng-value='count'>
+                    </div>
+                </div>
+            </label>
+            <label class="item item-input">
+                <div class="row">
+                    <div class="col col-25">
+                        <span class="input-label">耳<span></span>标</span>
+                    </div>
+                    <div class="col">
+                        <input type="text" readonly placeholder=" " ng-value='earNo'>
+                    </div>
+                </div>
+            </label>
+        </div>
+        <div class="content has-header">
+            <div class="item item-input">
+                <span class="input-label" style="width: auto !important;">照片<small>(点击照片可放大)</small></span>
+            </div>
+            <div class="item item-input row" id="demo-test" style=" display: inherit;">
+                <div id="demo-test-gallery" class="demo-gallery" data-pswp-uid="1">
+                    <a href="../img/Temporary-Image-Files/2.jpg" data-size="1600x1067" data-med="../img/Temporary-Image-Files/2.jpg" data-med-size="1024x683" data-author="Thomas Lefebvre">
+                        <img first_img src="../img/Temporary-Image-Files/2.jpg" alt="" class="OrderDetailImgChooseMin col-33 first_img">
+                    </a>
+                    <a href="../img/Temporary-Image-Files/1.jpg" data-size="1600x1067" data-med="../img/Temporary-Image-Files/1.jpg" data-med-size="1024x683" data-author="Folkert Gorter" class="demo-gallery__img--main">
+                        <img src="../img/Temporary-Image-Files/1.jpg" alt="" class="OrderDetailImgChooseMin col-33">
+                    </a>
+                    <a class="third_a" href="../img/Temporary-Image-Files/2.jpg" data-size="1600x1067" data-med="../img/Temporary-Image-Files/2.jpg" data-med-size="1024x683" data-author="Samuel Rohl">
+                        <img src="../img/Temporary-Image-Files/2.jpg" alt="" class="OrderDetailImgChooseMin col-33 third_img">
+                    </a>
+                    <a href="../img/Temporary-Image-Files/3.jpg" data-size="1600x1067" data-med="../img/Temporary-Image-Files/3.jpg" data-med-size="1024x683" data-author="Ales Krivec">
+                        <img src="../img/Temporary-Image-Files/3.jpg" alt="" class="OrderDetailImgChooseMin col-33">
+                    </a>
+                    <a href="../img/Temporary-Image-Files/1.jpg" data-size="1600x1067" data-med="../img/Temporary-Image-Files/1.jpg" data-med-size="1024x683" data-author="Michael Hull">
+                        <img src="../img/Temporary-Image-Files/1.jpg" alt="" class="OrderDetailImgChooseMin col-33">
+                    </a>
+                </div>
+
+
+            </div>
+            <div class="row lookImg"  style="margin-top: 5px;background-color: #fff;height:43px;text-align: center;line-height: 43px; color:#71b32b;font-size: 16px;font-weight: 600">
+                <div style="margin: 0 auto">显示全部图片</div>
+            </div>
+        </div>
+        <div class="style-select" style="height: 0">
+            <div class="radio">
+                <input type="radio" name="gallery-style" value="minimal" id="radio-minimal-black" checked="checked">
+                <label for="radio-minimal-black" style="height: 0">
+                </label>
+            </div>
+        </div>
+        <div id="gallery" class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="pswp__bg" style=""></div>
+
+            <div class="pswp__scroll-wrap">
+
+                <div class="pswp__container" style="transform: translate3d(0px, 0px, 0px);">
+                    <div class="pswp__item" style="display: block; transform: translate3d(-403px, 0px, 0px);">
+                        <div class="pswp__zoom-wrap" style="transform: translate3d(0px, 200px, 0px) scale(1);">
+                            <!--<img class="pswp__img pswp__img&#45;&#45;placeholder" src="https://farm6.staticflickr.com/5584/14985868676_4b802b932a_m.jpg" style="width: 360px; height: 240px; display: none;">-->
+                            <!--<img class="pswp__img" src="https://farm6.staticflickr.com/5584/14985868676_4b802b932a_b.jpg" style="width: 360px; height: 240px;">-->
+                        </div>
+                    </div>
+                    <div class="pswp__item" style="transform: translate3d(0px, 0px, 0px);">
+                        <div class="pswp__zoom-wrap" style="transform: translate3d(0px, 200px, 0px) scale(1);">
+                            <!--<img class="pswp__img pswp__img&#45;&#45;placeholder" src="https://farm4.staticflickr.com/3920/15008465772_383e697089_m.jpg" style="width: 360px; height: 240px; display: none;">-->
+                            <!--<img class="pswp__img" src="https://farm4.staticflickr.com/3920/15008465772_383e697089_b.jpg" style="display: block; width: 360px; height: 240px;">-->
+                        </div>
+                    </div>
+                    <div class="pswp__item" style="display: block; transform: translate3d(403px, 0px, 0px);">
+                        <div class="pswp__zoom-wrap" style="transform: translate3d(0px, 140px, 0px) scale(1);">
+                            <!--<img class="pswp__img pswp__img&#45;&#45;placeholder" src="https://farm4.staticflickr.com/3894/15008518202_b016d7d289_m.jpg" style="width: 360px; height: 360px; display: none;">-->
+                            <!--<img class="pswp__img" src="https://farm4.staticflickr.com/3894/15008518202_b016d7d289_b.jpg" style="width: 360px; height: 360px;">-->
+                        </div>
+                    </div>
+                </div>
+                <div class="pswp__ui pswp__ui--hidden">
+                    <div class="pswp__top-bar">
+                        <div class="pswp__counter">5 / 5</div>
+                        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+                        <button class="pswp__button pswp__button--share pswp__element--disabled" title="Share"></button>
+                        <button class="pswp__button pswp__button--fs pswp__element--disabled" title="Toggle fullscreen"></button>
+                        <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+                        <div class="pswp__preloader">
+                            <div class="pswp__preloader__icn">
+                                <div class="pswp__preloader__cut">
+                                    <div class="pswp__preloader__donut"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap pswp__element--disabled">
+                        <div class="pswp__share-tooltip"></div>
+                    </div>
+                    <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+                    <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+                    <div class="pswp__caption pswp__element--disabled">
+                        <div class="pswp__caption__center">It's a dummy caption. He who searches for meaning here will
+                            be sorely disappointed.<br>
+                            <small>Photo: Thomas Lefebvre</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content has-header Basic-Information-On-Farms">
+            <label class="item item-input">
+                <div class="row">
+                    <div class="col">
+                        <span class="input-label" style="font-size:16px;font-weight: 600">养殖场(户)基本信息</span>
+                    </div>
+                </div>
+            </label>
+            <label class="item item-input">
+                <div class="row">
+                    <div class="col col-25 ">
+                        <span class="input-label">姓<span></span>名</span>
+                    </div>
+                    <div class="col">
+                        <input type="text" readonly placeholder=" " ng-value="custName">
+                    </div>
+                </div>
+            </label>
+            <label  class="item item-input">
+                <div class="row">
+                    <div class="col col-25">
+                        <span class="input-label">电话号码</span>
+                    </div>
+                    <div class="col">
+                        <input type="text" readonly placeholder=" " ng-value ="mobile "  >
+                    </div>
+                </div>
+            </label>
+
+            <div style="background: #fff;border-top:1px solid #ddd;border-bottom:1px solid #ddd;padding-top:10px;padding-bottom: 10px;">
+                <div class="row">
+                    <div class="col col-25">
+                        <div  style="border: none;padding-left:12px;font-weight: 500;margin-bottom:0;font-size: 14px;color:#71b32b">
+                            养殖地点
+                        </div>
+                    </div>
+                    <div class="col col-75" style="padding-left:12px ;padding-right: 10px" ng-model="clctAddr">{{clctAddr}}
+                    </div>
+                </div>
+            </div>
+
+            <label  class="item item-input">
+                <div class="row">
+                    <div class="col col-25">
+                        <span class="input-label">身份证号</span>
+                    </div>
+                </div>
+                <div class="col">
+                    <input type="text" readonly placeholder=" " ng-value = "idCardNo" />
+                </div>
+            </label>
+            <label class="item item-input">
+                <div class="row">
+                    <div class="col">
+                        <span class="input-label">银行卡号</span>
+                    </div>
+                    <div class="col">
+                        <input type="text" readonly placeholder=" " ng-value="bankAcctNum"/>
+                    </div>
+                </div>
+            </label>
+            <label  class="item item-input">
+                <div class="row">
+                    <div class="col col-25">
+                        <span class="input-label">存<span style="margin-left: 7px;"></span>栏<span style="margin-left: 7px;"></span>量</span>
+                    </div>
+                    <div class="col">
+                        <input type="text" readonly placeholder=" " ng-value =" currentAmount" />
+
+                    </div>
+                </div>
+            </label>
+            <label class="item item-input">
+                <div class="row">
+                    <div class="col col-25">
+                        <span class="input-label">是否消毒</span>
+                    </div>
+                    <div class="col">
+                        <input type="text" readonly placeholder=" " ng-value="isDisinfectant "/>
+                    </div>
+                </div>
+            </label>
+            <label class="item item-input" style="height:50px;">
+            </label>
+        </div>
+    </div>
+    <!--footer-->
+    <div class="bar bar-footer content" @click="goDetail" v-if="isShow">
+        <button class="button" v-text="buttonText">pi</button>
+    </div>
+</div>
+</body>
+
+<script>
+    var id=window.location.href.split("=")[1];
+//    var id="dac62392a89b4eea873f4d50fafcd4361483602651843";
+console.log(id)
+    var app=angular.module("myApp",[]);
+    var url = "/KNERP/a/weixin/bill/billInfo";
+    app.controller("ctx",function($scope,$http){
+
+        $http({method:"post",url:url,params:{id:id}}).success(function (data) {
+            console.log(data);
+            $scope.clctCarNo=data.clctCarNo;
+            $scope.clctBy =data.clctBy ;
+            $scope.endTime =data.endTime ;
+            $scope.clctAddr =data.clctAddr;
+            $scope.custName =data.custName;
+            $scope.mobile =data.mobile;
+            $scope.animalType=data.list[0].animalType;
+            $scope.weight=data.list[0].weight;
+            $scope.count=data.list[0].count;
+            $scope.earNo=data.list[0].earNo;
+            console.log(data.list[0]);
+            console.log(data.billState);
+        });
+    });
+
+    //    var _url="/KNERP/a/weixin/bill/billInfo";
+//    var id = window.location.href.split("=")[1];
+//    console.log(id);
+    $(".third_a~a").css("display","none");
+    $.ajax({
+        type:"post",
+        url:url,
+        data:{"id":id},
+        async:true,
+        success:function(data){
+        console.log(data);
+            $("#demo-test-gallery").width($("#demo-test").width());
+            $("#demo-test-gallery img").css({"width":$("#demo-test-gallery").width()*0.3
+            });
+            $(".lookImg").click(function(){
+
+                $(".lookImg>div").toggleClass("active");
+                if( $(".lookImg>div").hasClass("active")){
+                    $(".lookImg>div").html("收起");
+                    $(".third_a~a").slideDown(300);
+                    setTimeout(function(){
+                        $(".third_a~a").css({"visibility":" visible"})
+                    },300)
+
+                }else{
+                    $(".lookImg>div").html("显示全部图片");
+                    $(".third_a~a").css({"visibility":" hidden"}).slideUp(300);
+
+
+                }
+            })
+        }
+    });
+//    new Vue({
+//        el: '#OrderDetailsForm',
+//        /* ----Request data---callback*/
+//        data: {
+//            id: '',
+//            OrderDetailsData: {},
+//            isShow: true,
+//            buttonText: "评价"
+//        },
+//        methods: {
+//            //get ID
+//            getId: function () {
+//                this.id = window.location.href.split("=")[1];
+//            },
+//            goDetail: function () {
+//                var vvv = this.OrderDetailsData.billId;
+//                window.location.href = 'Order-Evaluation.html?id=' + vvv;
+//            }
+//        },
+//        created: function () {
+//            console.log(id);
+//            this.getId();
+//            this.$http.get('/KNERP/a/weixin/bill/billInfo', {params: {id:id}})
+//                    .then(
+//                    function (success) {
+//
+//                        console.log(success);
+////                        this.OrderDetailsData = JSON.parse(success.data);
+//                        var thisOrderScore = this.OrderDetailsData.score;
+//                        var thisOrderbillState = this.OrderDetailsData.billState;
+//                        if (thisOrderScore > 0) {
+//                            this.buttonText = "已评价";
+//                        }
+//                        if (thisOrderbillState == '0' || thisOrderbillState == '2' || thisOrderbillState == '6' || thisOrderbillState == '7' || thisOrderbillState == '8') {
+//                            this.isShow = false;
+//                        }
+//                    },
+//                    function (error) {
+//                        console.log('error')
+//                    }
+//            );
+//        }
+//
+//    });
+</script>
+<script type="text/javascript">
+    (function () {
+
+        var initPhotoSwipeFromDOM = function (gallerySelector) {
+
+            var parseThumbnailElements = function (el) {
+                var thumbElements = el.childNodes,
+                        numNodes = thumbElements.length,
+                        items = [],
+                        el,
+                        childElements,
+                        thumbnailEl,
+                        size,
+                        item;
+
+                for (var i = 0; i < numNodes; i++) {
+                    el = thumbElements[i];
+
+                    // include only element nodes
+                    if (el.nodeType !== 1) {
+                        continue;
+                    }
+
+                    childElements = el.children;
+
+                    size = el.getAttribute('data-size').split('x');
+
+                    // create slide object
+                    item = {
+                        src: el.getAttribute('href'),
+                        w: parseInt(size[0], 10),
+                        h: parseInt(size[1], 10),
+                        author: el.getAttribute('data-author')
+                    };
+
+                    item.el = el; // save link to element for getThumbBoundsFn
+
+                    if (childElements.length > 0) {
+                        item.msrc = childElements[0].getAttribute('src'); // thumbnail url
+                        if (childElements.length > 1) {
+                            item.title = childElements[1].innerHTML; // caption (contents of figure)
+                        }
+                    }
+
+
+                    var mediumSrc = el.getAttribute('data-med');
+                    if (mediumSrc) {
+                        size = el.getAttribute('data-med-size').split('x');
+                        // "medium-sized" image
+                        item.m = {
+                            src: mediumSrc,
+                            w: parseInt(size[0], 10),
+                            h: parseInt(size[1], 10)
+                        };
+                    }
+                    // original image
+                    item.o = {
+                        src: item.src,
+                        w: item.w,
+                        h: item.h
+                    };
+
+                    items.push(item);
+                }
+
+                return items;
+            };
+
+            // find nearest parent element
+            var closest = function closest(el, fn) {
+                return el && ( fn(el) ? el : closest(el.parentNode, fn) );
+            };
+
+            var onThumbnailsClick = function (e) {
+                e = e || window.event;
+                e.preventDefault ? e.preventDefault() : e.returnValue = false;
+
+                var eTarget = e.target || e.srcElement;
+
+                var clickedListItem = closest(eTarget, function (el) {
+                    return el.tagName === 'A';
+                });
+
+                if (!clickedListItem) {
+                    return;
+                }
+
+                var clickedGallery = clickedListItem.parentNode;
+
+                var childNodes = clickedListItem.parentNode.childNodes,
+                        numChildNodes = childNodes.length,
+                        nodeIndex = 0,
+                        index;
+
+                for (var i = 0; i < numChildNodes; i++) {
+                    if (childNodes[i].nodeType !== 1) {
+                        continue;
+                    }
+
+                    if (childNodes[i] === clickedListItem) {
+                        index = nodeIndex;
+                        break;
+                    }
+                    nodeIndex++;
+                }
+
+                if (index >= 0) {
+                    openPhotoSwipe(index, clickedGallery);
+                }
+                return false;
+            };
+
+            var photoswipeParseHash = function () {
+                var hash = window.location.hash.substring(1),
+                        params = {};
+
+                if (hash.length < 5) { // pid=1
+                    return params;
+                }
+
+                var vars = hash.split('&');
+                for (var i = 0; i < vars.length; i++) {
+                    if (!vars[i]) {
+                        continue;
+                    }
+                    var pair = vars[i].split('=');
+                    if (pair.length < 2) {
+                        continue;
+                    }
+                    params[pair[0]] = pair[1];
+                }
+
+                if (params.gid) {
+                    params.gid = parseInt(params.gid, 10);
+                }
+
+                return params;
+            };
+
+            var openPhotoSwipe = function (index, galleryElement, disableAnimation, fromURL) {
+                var pswpElement = document.querySelectorAll('.pswp')[0],
+                        gallery,
+                        options,
+                        items;
+
+                items = parseThumbnailElements(galleryElement);
+
+                // define options (if needed)
+                options = {
+
+                    galleryUID: galleryElement.getAttribute('data-pswp-uid'),
+
+                    getThumbBoundsFn: function (index) {
+                        // See Options->getThumbBoundsFn section of docs for more info
+                        var thumbnail = items[index].el.children[0],
+                                pageYScroll = window.pageYOffset || document.documentElement.scrollTop,
+                                rect = thumbnail.getBoundingClientRect();
+
+                        return {x: rect.left, y: rect.top + pageYScroll, w: rect.width};
+                    },
+
+                    addCaptionHTMLFn: function (item, captionEl, isFake) {
+                        if (!item.title) {
+                            captionEl.children[0].innerText = '';
+                            return false;
+                        }
+                        captionEl.children[0].innerHTML = item.title + '<br/><small>Photo: ' + item.author + '</small>';
+                        return true;
+                    }
+
+                };
+
+
+                if (fromURL) {
+                    if (options.galleryPIDs) {
+                        // parse real index when custom PIDs are used
+                        // http://photoswipe.com/documentation/faq.html#custom-pid-in-url
+                        for (var j = 0; j < items.length; j++) {
+                            if (items[j].pid == index) {
+                                options.index = j;
+                                break;
+                            }
+                        }
+                    } else {
+                        options.index = parseInt(index, 10) - 1;
+                    }
+                } else {
+                    options.index = parseInt(index, 10);
+                }
+
+                // exit if index not found
+                if (isNaN(options.index)) {
+                    return;
+                }
+
+
+                var radios = document.getElementsByName('gallery-style');
+                for (var i = 0, length = radios.length; i < length; i++) {
+                    if (radios[i].checked) {
+                        if (radios[i].id == 'radio-all-controls') {
+
+                        } else if (radios[i].id == 'radio-minimal-black') {
+                            options.mainClass = 'pswp--minimal--dark';
+                            options.barsSize = {top: 0, bottom: 0};
+                            options.captionEl = false;
+                            options.fullscreenEl = false;
+                            options.shareEl = false;
+                            options.bgOpacity = 0.85;
+                            options.tapToClose = true;
+                            options.tapToToggleControls = false;
+                        }
+                        break;
+                    }
+                }
+
+                if (disableAnimation) {
+                    options.showAnimationDuration = 0;
+                }
+
+                // Pass data to PhotoSwipe and initialize it
+                gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+
+                // see: http://photoswipe.com/documentation/responsive-images.html
+                var realViewportWidth,
+                        useLargeImages = false,
+                        firstResize = true,
+                        imageSrcWillChange;
+
+                gallery.listen('beforeResize', function () {
+
+                    var dpiRatio = window.devicePixelRatio ? window.devicePixelRatio : 1;
+                    dpiRatio = Math.min(dpiRatio, 2.5);
+                    realViewportWidth = gallery.viewportSize.x * dpiRatio;
+
+
+                    if (realViewportWidth >= 1200 || (!gallery.likelyTouchDevice && realViewportWidth > 800) || screen.width > 1200) {
+                        if (!useLargeImages) {
+                            useLargeImages = true;
+                            imageSrcWillChange = true;
+                        }
+
+                    } else {
+                        if (useLargeImages) {
+                            useLargeImages = false;
+                            imageSrcWillChange = true;
+                        }
+                    }
+
+                    if (imageSrcWillChange && !firstResize) {
+                        gallery.invalidateCurrItems();
+                    }
+
+                    if (firstResize) {
+                        firstResize = false;
+                    }
+
+                    imageSrcWillChange = false;
+
+                });
+
+                gallery.listen('gettingData', function (index, item) {
+                    if (useLargeImages) {
+                        item.src = item.o.src;
+                        item.w = item.o.w;
+                        item.h = item.o.h;
+                    } else {
+                        item.src = item.m.src;
+                        item.w = item.m.w;
+                        item.h = item.m.h;
+                    }
+                });
+
+                gallery.init();
+            };
+
+            // select all gallery elements
+            var galleryElements = document.querySelectorAll(gallerySelector);
+            for (var i = 0, l = galleryElements.length; i < l; i++) {
+                galleryElements[i].setAttribute('data-pswp-uid', i + 1);
+                galleryElements[i].onclick = onThumbnailsClick;
+            }
+
+            // Parse URL and open gallery if it contains #&pid=3&gid=1
+            var hashData = photoswipeParseHash();
+            if (hashData.pid && hashData.gid) {
+                openPhotoSwipe(hashData.pid, galleryElements[hashData.gid - 1], true, true);
+            }
+        };
+
+        initPhotoSwipeFromDOM('.demo-gallery');
+
+    })();
+
+</script>
+
+</html>

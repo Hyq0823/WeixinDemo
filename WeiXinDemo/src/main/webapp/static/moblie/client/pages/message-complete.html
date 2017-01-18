@@ -1,0 +1,125 @@
+
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>信息完善</title>
+    <link rel="stylesheet" href="../css/ionic.css">
+    <link rel="stylesheet" href="../css/message_complete.css">
+    <link rel="shortcut icon" href="../img/pic/logo_green.ico">
+    <link rel="Bookmark" href="../img/pic/logo_green.ico">
+    <!--<script src="../js/ionic.bundle.min.js"></script>-->
+
+    <script src="../js/jquery-3.0.0.js"></script>
+    
+    <script type="text/javascript">
+    function GetQueryString(name)
+    {
+         var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+         var r = window.location.search.substr(1).match(reg);
+         if(r!=null)return  unescape(r[2]); return null;
+    }
+    
+    
+    
+    
+    </script>
+    <style>
+        .bar-header a{
+            display: inline-block;width: 30px;position: absolute;z-index: 999999999;
+            -webkit-user-drag: none;
+            line-height: 40px;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+            -webkit-tap-highlight-color: transparent;
+            text-align: center;
+            font-size: 18px;
+            color:white;
+        }
+    </style>
+    
+</head>
+
+<body style="width: 100%;height:100%;">
+<div id="main_wrap">
+    <div class="bar bar-header messageHeader" style="position: fixed">
+        <a href="register.html" class="ion-chevron-left goback" style=""></a>
+        <h1 class="title">信息完善</h1>
+    </div>
+    <ion-content>
+        <div class="list" style="margin-top:53px">
+            <label class="item item-input">
+                <span>姓<span style="margin-left: 28px"></span>名</span>
+                <input class="cuS" name="custName" type="text" placeholder="请填写你的姓名">
+                <span></span>
+                <!--<span class="last"></span>-->
+            </label>
+            <label class="item item-input">
+                <span>身份证号</span>
+                <input  class="idNumber" type="text" name="idNumber" placeholder="请填写身份证号" maxlength="18">
+                <span></span>
+            </label>
+            <div class="_sex" style="border-bottom: 1px solid #ddd;position: relative">
+                <div>性<span style="margin-left:28px;"></span>别</div>
+                <div class="_sex_son wo" id="_sex_son">
+                    <span>请选择你的性别</span>
+                </div>
+                <div>
+                    <input name="_sex_input" class="_sex_input" readonly="readonly" type="hidden"/>
+                    <span style="position: absolute;right:10px;margin: 0;top:15px"></span>
+                </div>
+            </div>
+            <ul class="com_ul">
+                <li _sexId="1">男</li>
+                <li _sexId="2">女</li>
+            </ul>
+            <div class="address" style="position: relative">
+                <div>地<span style="margin-left:28px;"></span>址</div>
+                <div class="address_son wo" id="address_son">
+                    请选择详细地址
+                </div>
+                <div>
+                    <input name="address_input" class="address_input" readonly="readonly" type="hidden"/>
+                    <span style="position: absolute;right:10px;margin: 0;top:15px"></span>
+                </div>
+            </div>
+            <label class="item item-input" style="clear: both">
+                <span>密<span style="margin-left: 28px"></span>码</span>
+                <input class="password" name="password" type="text" maxlength="20" placeholder="请输入你的密码">
+                <span></span>
+            </label>
+            <label class="item item-input">
+                <span>再次输入</span>
+                <input class="repeatPwd" name="repeatPwd" type="text" maxlength="20" placeholder="请再输一次密码">
+                <span></span>
+            </label>
+            <div class="tishi" style=""><span>*正在提交请稍候</span></div>
+        </div>
+
+    </ion-content>
+
+    <div class="row " style="   position: fixed;bottom: 0;height:43px;background-color: #fff;z-index: 111;">
+        <div class="title messageFooter" style="">提交</div>
+    </div>
+
+</div>
+<div class="message_wrap" style="">
+    <nav>
+        <div class="nav_first">
+            <span class="ion-chevron-left back" ></span>
+            <div style="text-align: center;color:white;font-size:18px;font-weight:600;">请选择地址</div>
+        </div>
+        <div class="nav">
+        </div>
+    </nav>
+    <div class="row FooterFather" style="position: fixed;bottom: 0;height:43px;background-color: #fff;display: none">
+        <div class="title Footer">确认地址</div>
+    </div>
+</div>
+</body>
+
+<script src="../js/message-complete.js"></script>
+</html>

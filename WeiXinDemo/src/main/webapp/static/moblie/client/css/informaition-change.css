@@ -1,0 +1,57 @@
+#main_wrap .messageHeader {
+    position: fixed;
+    height: 43px;
+    line-height: 43px;
+}
+
+#main_wrap > span.back {
+    height: 43px;
+    width: 30px;
+    position: absolute;
+    z-index: 100;
+    line-height: 40px;
+}
+
+#main_wrap .htmleaf-container {
+    position: fixed;
+    z-index: 50000000;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    display: none;
+}
+
+#view {
+    margin-top: 53px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: contain;
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    background-image: url(../img/header_photo.png);
+}
+
+#file {
+    position: absolute;
+    height: 60px;
+    width: 60px;
+    opacity: 0;
+    margin: 53px auto 0 -30px;
+    left: 50%;
+}
+
+.message_wrap .nav_first > div:nth-child(2) {
+    text-align: center;
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.message_wrap div.FooterFather {
+    position: fixed;
+    bottom: 0;
+    height: 43px;
+    background-color: #fff;
+    display: none
+}

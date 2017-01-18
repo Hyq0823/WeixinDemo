@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <!--<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">-->
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>欢迎注册</title>
+    <link rel="stylesheet" href="css/ionic.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/picbic.css">
+    <link rel="shortcut icon" href="img/pic/logo_green.ico">
+    <link rel="Bookmark" href="img/pic/logo_green.ico">
+    <!--<script type="text/javascript" src="js/ionic.bundle.min.js"></script>-->
+    <script src="js/jquery-3.0.0.js"></script>
+    <script type="text/javascript">
+    
+
+    function GetQueryString(name)
+    {
+         var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+         var r = window.location.search.substr(1).match(reg);
+         if(r!=null)return  unescape(r[2]); return null;
+    }
+    
+    var code = GetQueryString("code");
+    var menuType = GetQueryString("menuType");
+    console.log("code: "+code+"   menuType: "+menuType);
+    
+      $.ajax({
+    	  type: "POST",
+    	  url: "http://ougwo57463.java.myjava.wang/Demo/authorization",
+    	  async:false,
+    	  dataType: "json",
+    	  data:{"code":code,"menuType":menuType},
+    	  success:function(result){
+    		  console.log(result.error);
+    		  console.log(result.msg);
+    		  console.log(result.data.openId);
+    		  console.log(result.data.unionId);
+    		  $("#openId").val(result.data.openId);
+    		  $("#unionId").val(result.data.unionId);
+    		  
+    		  window.location.href="http://ougwo57463.java.myjava.wang/Demo/static/moblie/client/pages/message-complete.html?openId="
+    				  +result.data.openId+"&unionId="+result.data.unionId+"phone=18381307126";
+    		 // window.location.href="http://localhost:8080/WeiXinDemo/static/moblie/client/pages/Order-List.html"
+    	  },error:function(result){
+    		  console.log(result);
+    		  alert(result);
+    	  }
+
+      });
+     
+    </script>
+</head>
+<body>
+<ion-header-bar class="bar-positive">
+    <!--<div class="login_header"></div>-->
+    <div class="login_div">
+        <div class="fl"><a href="login.html"><img src="img/pic/fanhui.png" alt="上一页"></a></div>
+        <div class="fr"><a href="login.html">登录</a></div>
+    </div>
+</ion-header-bar>
+<ion-content>
+    <div class="kl_logo"><img src="img/pic/logo_green.png" alt=""></div>
+    <br>
+    <form id="form" action="/static/moblie/client/pages/message-complete.html">
+        <input type="hidden" id="openId" name="openId">
+        <input type="hidden" id="unionId" name="unionId">
+        <div class="list">
+            <label class="item item-input" style="border-top:none">
+                <img src="img/pic/iphone.png" alt="" >
+                <input maxlength="11" name="phone" style="padding-left:10px" type="text" placeholder="输入手机号">
+                <span class="phone_prompt" style="margin-right: 10px;color: red;font-size: 11px;"></span>
+            </label>
+            <label class="item item-input">
+                <img src="img/pic/mima.png" alt="" >
+                <input maxlength="6" name="validation" style="padding-left:10px" type="text" placeholder="输入验证码" >
+                <span class="yanZ"  style="margin-right: 10px;color: red;font-size: 11px;"> </span>
+                <span class="validation" style="margin-right: 10px;color: #ff5b58;font-size: 11px;text-decoration:underline;">获取验证码</span>
+            </label>
+        </div>
+    </form>
+    <div class="row login_submit">
+        <div class="col">
+            <span></span>
+            <button type="submit" class="button button-block login_button" style="background-color: #71b32d">立即注册</button>
+        </div>
+    </div>
+</ion-content>
+<script src="js/register_prompt.js"></script>
+</body>
+</html>

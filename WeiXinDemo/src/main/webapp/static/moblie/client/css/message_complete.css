@@ -1,0 +1,223 @@
+body {
+    background-color: #eee;
+}
+
+.messageHeader {
+    background-color: #71b32d;
+    font-size: 18px;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    color: #fff;
+    text-align: center;
+    line-height: 43px;
+    font-weight: 600;
+}
+
+.messageHeader .title {
+    font-weight: 600;
+    font-size: 18px;
+    color: #fff;
+}
+
+.list .item > span:first-child {
+    font-size: 14px;
+
+}
+
+.list .item > input {
+    padding-left: 20px;
+}
+
+.list .item > span:nth-child(3), .list .item > span:nth-child(4) {
+    color: #ff5b58;
+    font-size: 11px;
+    margin-right: 10px;
+    margin-top: 2px;
+}
+
+.list .item > span:first-child, .address > span:first-child, ._sex > span:first-child {
+    color: #71b32d;
+    font-weight: 600;
+}
+
+.address, ._sex {
+    width: 100%;
+    background-color: #fff;
+    overflow: hidden;
+    -webkit-align-items: center; /* Safari 7.0+ */
+    display: flex;
+    align-items: center;
+    display: -webkit-flex; /* Safari */
+}
+
+.address > div:first-child, ._sex > div:first-child {
+    /*float: left;*/
+    margin-left: 16px;
+    padding: 15px 0;
+    color: #71b32D;
+    font-size: 14px;
+    font-weight: 600;
+
+}
+
+input[type=hidden] {
+    position: absolute;
+    width: 60%;
+    left: 20%;
+}
+
+.address > div:nth-child(3) > span, ._sex > div:nth-child(3) > span {
+    /*float: right;*/
+    color: red;
+    /*margin-right: 10px;*/
+    height: 19px;;
+    font-size: 11px;
+    text-align: center;
+    margin-top: 15px;
+
+}
+
+#address_son, #_sex_son {
+    word-break: break-all;
+    word-wrap: break-word;
+    float: left;
+    padding: 15px 0 15px 20px;
+    color: #aaa
+}
+
+.tishi {
+    height: 50px;
+    line-height: 50px;
+    display: none;
+    font-size: 12px;
+}
+
+.tishi > span {
+    float: right;
+    margin-right: 10px;
+    color: red
+}
+
+/*主页提交按钮*/
+.FooterFather {
+
+}
+
+.messageFooter, .Footer, .Footer2, .passFooter {
+    background-color: #71b32d;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    color: #fff;
+    text-align: center;
+    line-height: 33px;
+    font-weight: 600;
+    border-radius: 3px;
+}
+
+#uli1 li, #uli2 li, #uli3 li, #uli4 li, #uli5 li, #uli6 li {
+    padding-left: 28px;
+    border-bottom: 1px solid #eee;
+    line-height: 50px;
+    height: 50px;
+}
+
+.ion-chevron-down {
+    float: right;
+    margin-right: 5px;
+    color: #71b32d;
+    font-weight: 300;
+    display: none;
+}
+
+.nav_second > span:first-child {
+    margin-left: 16px;
+}
+
+.nav_second {
+    height: 50px;
+    line-height: 50px;
+    border-bottom: 1px solid #eee;
+
+}
+
+.nav_select {
+    float: right;
+    color: red;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center
+}
+
+.com_ul {
+    margin: 0;
+    padding: 0;
+}
+
+.com_ul li {
+    background-color: white;
+    padding-left: 28px;
+    border-bottom: 1px solid #ccc;
+    line-height: 50px;
+    height: 50px;
+    font-size: 14px;
+}
+
+.message_wrap {
+    width: 100%;
+    margin-top: 100%;
+}
+
+.nav_first {
+    background-color: #71b32d;
+    height: 43px;
+    line-height: 43px;
+    width: 100%
+}
+
+.back {
+    color: white;
+    position: absolute;
+    font-size: 20px;
+    font-weight: 600;
+    width: 30px;
+    text-align: center
+}
+
+
+
+.active {
+    transform: rotate(90deg);
+}
+
+div.item-input {
+    position: relative;
+    background-color: #fff;
+    height: 53px;
+    border-bottom: 1px solid #ddd;
+    /*-webkit-align-items: center; /!* Safari 7.0+ *!/*/
+    /*display: flex;*/
+    /*align-items: center;*/
+    /*display: -webkit-flex; /!* Safari *!/*/
+}
+
+div.item-input input {
+    font-size: 14px;
+    color: #bbb;
+    outline: none;
+    border: none;
+}
+
+div.item-input > span:last-child {
+    position: absolute;
+    right: 00px;
+    margin: 0;
+    top: 15px
+
+}
+
+div.item-input > span:first-child {
+    margin-left: 16px;
+}

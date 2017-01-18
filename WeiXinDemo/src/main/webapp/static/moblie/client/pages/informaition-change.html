@@ -1,0 +1,550 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no, email=no" />
+    <title>信息修改</title>
+    <link rel="stylesheet" href="../css/ionic.css">
+    <link rel="stylesheet" type="text/css" href="../css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="../css/default.css">
+    <link rel="stylesheet" href="../css/message_complete.css">
+    <link rel="shortcut icon" href="../img/pic/logo_green.ico">
+    <link rel="Bookmark" href="../img/pic/logo_green.ico">
+    <style>
+        body {
+            background: #eee;
+            color: #000;
+            font-weight: 500;
+            font-size: 14px;
+            font-family: "Microsoft YaHei","宋体","Segoe UI", "Lucida Grande", Helvetica, Arial,sans-serif, FreeSans, Arimo;
+        }
+        #clipArea {
+            margin: 20px;
+            height: 300px;
+        }
+        #file,
+        #clipBtn {
+            margin: 20px;
+        }
+        #view {
+            margin: 0 auto;
+            width: 200px;
+            height: 200px;
+        }
+    </style>
+</head>
+
+<body style="width: 100%;height:100%;" ontouchstart="">
+<div id="main_wrap" style="overflow: hidden;margin-bottom: 70px;">
+    <span class="ion-chevron-left back" style="height:43px;width: 30px;line-height:43px;position: absolute;z-index: 156666" ></span>
+    <div class="bar bar-header messageHeader" style="position: fixed;height:43px;line-height: 43px;" >
+        <h1 class="title" style="margin: 0 auto;font-weight: 500;" >信息修改</h1>
+    </div>
+    <article class="htmleaf-container" style="position:fixed;z-index:50000000;width:100%;height:100%;background-color:#000;display: none;">
+        <div id="clipArea" ></div>
+        <button id="clipBtn">截取</button>
+    </article>
+    <ion-content>
+        <input type="hidden" id="photo"/>
+        <input type="file" id="file"  style="position: absolute;height:60px;width:60px;opacity: 0;margin:53px auto 0 -30px;left: 50%;">
+        <div id="view" title="" style="margin-top:53px;background-repeat: no-repeat; background-position: center center; background-size: contain;width:60px;height:60px;border-radius: 30px;background-image:url(../img/header_photo.png); "></div>
+        <div class="list" style="margin-top:10px">
+            <label class="item item-input">
+                <span>姓<span style="margin-left: 28px"></span>名</span>
+                <input class="cuS" name="custName" type="text" placeholder="请填写你的姓名">
+                <span></span>
+            </label>
+            <label class="item item-input">
+                <span>身份证号</span>
+                <input class="idNumber" type="text" name="idNumber" placeholder="请填写身份证号" maxlength="18">
+                <span></span>
+            </label>
+            <div class="_sex" style="border-bottom: 1px solid #ddd;position: relative">
+                <div>性<span style="margin-left:28px;"></span>别</div>
+                <div class="_sex_son wo" id="_sex_son">
+                    <span></span>
+                </div>
+                <div>
+                    <input name="_sex_input" class="_sex_input" readonly="readonly" type="hidden"/>
+                    <span style="position: absolute;right:10px;margin: 0;top:15px"></span>
+                </div>
+            </div>
+            <ul class="com_ul">
+                <li _sexId="1">男</li>
+                <li _sexId="2">女</li>
+            </ul>
+            <div class="address" style="position: relative">
+                <div>地<span style="margin-left:28px;"></span>址</div>
+                <div class="address_son wo" id="address_son">
+                </div>
+                <div>
+                    <input name="address_input" class="
+                    " readonly="readonly" type="hidden"/>
+                    <span style="position: absolute;right:10px;margin: 0;top:15px"></span>
+                </div>
+            </div>
+            <div class="tishi" style=""><span>*正在提交请稍候</span></div>
+        </div>
+    </ion-content>
+    <div class="row " style=" position: fixed;bottom: 0;height:43px;background-color: #fff;z-index: 111;">
+        <div class="title messageFooter reading_tijiao" style="" id="ti_Jiao">提交</div>
+    </div>
+</div>
+<div class="message_wrap" style="">
+    <nav>
+        <div class="nav_first">
+            <span class="ion-chevron-left back" ></span>
+            <div style="text-align: center;color:white;font-size:18px;font-weight:600;">请选择地址</div>
+        </div>
+        <div class="nav">
+        </div>
+    </nav>
+    <div class="row FooterFather" style="position: fixed;bottom: 0;height:43px;background-color: #fff;display: none">
+        <div class="title Footer" id="tijiao">确认地址</div>
+    </div>
+</div>
+</body>
+<script src="../js/jquery-2.1.4.js"></script>
+<script src="../js/iscroll-zoom.js"></script>
+<script src="../js/hammer.js"></script>
+<script src="../js/jquery.photoClip.js"></script>
+<script>
+    //document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+    $("#clipArea").photoClip({
+        width: 200,
+        height: 200,
+        outputType: "jpg", // 指定输出图片的类型，可选 "jpg" 和 "png" 两种种类型，默认为 "jpg"
+        file: "#file",
+        view: "#view",
+        ok: "#clipBtn",
+        loadStart: function() {
+            console.log("照片读取中");
+        },
+        loadComplete: function() {
+            console.log("照片读取完成");
+    },
+        clipFinish: function(dataURL) {
+            var test_id=window.location.href.split("=")[1];
+
+            $("#view").attr("title",dataURL);
+            var dataCard={
+                userId:test_id,file:"{"+
+                "fileBase64:\""+$("#view").attr("title")+"\","+
+                "fileType:\"jpg\""+
+                "}"
+            };
+            console.log(dataCard);
+            $.ajax({
+                type: "post",
+                url:"/KNERP/a/upload/user/uploadPhotoFile",
+                data:dataCard,
+                success:function(data){
+                    var dataCard=JSON.parse(data);
+                    console.log(dataCard.path);
+                    $("#photo") .attr("value",dataCard.path);
+                    console.log($("#photo").val());
+                }
+
+            })
+        }
+    });
+
+    $("#view").css({"background-color":"white"});
+    $("#clipBtn").click(function(){
+        $(this).parent(".htmleaf-container").hide();
+    });
+    $("#file").click(function(){
+        $(".htmleaf-container").slideDown(10)
+    })
+
+    function validateIdCard(idCard){
+        //15位和18位身份证号码的正则表达式
+        var regIdCard=/^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/;
+        //如果通过该验证，说明身份证格式正确，但准确性还需计算
+        if(regIdCard.test(idCard)){
+            if(idCard.length==18){
+                var idCardWi=new Array( 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2 ); //将前17位加权因子保存在数组里
+                var idCardY=new Array( 1, 0, 10, 9, 8, 7, 6, 5, 4, 3, 2 ); //这是除以11后，可能产生的11位余数、验证码，也保存成数组
+                var idCardWiSum=0; //用来保存前17位各自乖以加权因子后的总和
+                for(var i=0;i<17;i++){
+                    idCardWiSum+=idCard.substring(i,i+1)*idCardWi[i];
+                }
+                var idCardMod=idCardWiSum%11;//计算出校验码所在数组的位置
+                var idCardLast=idCard.substring(17);//得到最后一位身份证号码
+                //如果等于2，则说明校验码是10，身份证号码最后一位应该是X
+                if(idCardMod==2){
+                    if(idCardLast=="X"||idCardLast=="x"){
+                    }else{
+                        $("input[name=idNumber]").next("span").html("*号码错误");
+                        $("input[name=idNumber]").val("");
+                        setTimeout(function(){
+                            $("input[name=idNumber]").next("span").html("");
+                        },1500)
+                    }
+                }else{
+                    //用计算出的验证码与最后一位身份证号码匹配，如果一致，说明通过，否则是无效的身份证号码
+                    if(idCardLast==idCardY[idCardMod]){
+
+                    }else{
+                        $("input[name=idNumber]").next("span").html("*号码错误");
+                        $("input[name=idNumber]").val("");
+                        setTimeout(function(){
+                            $("input[name=idNumber]").next("span").html("");
+                        },1500)
+                    }
+                }
+            }
+        }else{
+            $("input[name=idNumber]").next("span").html("*号码错误");
+            $("input[name=idNumber]").val("");
+            setTimeout(function(){
+                $("input[name=idNumber]").next("span").html("");
+
+            },1500)
+        }
+    }
+
+
+</script>
+<script>
+    var initIds = {};
+    function reading(){
+        $("input").blur();
+
+        var address = $("input[name=address_input]").val();
+        var idNumber = $("input[name=idNumber]").val();
+        var _sex = $("input[name=_sex_input]").val();
+        var _sexID=$("#_sex_son span").attr("_sexId");
+        var cuS = $("input[name=custName]").val();
+        var _name=/^[\u4e00-\u9fa5]{2,30}$/;
+        var a = ( cuS != "" && address != "" && idNumber != ""&& _sex!= "");
+        if (a) {
+            var test_id=window.location.href.split("=")[1];
+            var data = $.extend( {
+                "custName": cuS, "idCardNum": idNumber, "sex": _sexID,
+                "id":test_id,photo:$("#photo").val()
+            },initIds);
+           if(_name.test(cuS)==false){
+               $("input[name=custName]").next("span").html("姓名只能为2-30个汉字");
+               setTimeout(function(){
+                   $("input[name=custName]").next("span").html("")
+               },2000)
+           }
+           else{
+               $.ajax({
+                   type: "post",
+                   url: "/KNERP/a/weixin/updateUser",
+                   data: data,
+                   success: function (data) {
+                       console.log(data);
+                       $(".tishi").css({"display": "block"});
+                       setTimeout(function () {
+                           $(".tishi").css({"display":"none"});
+                           window.location.href = "Personal-information.html?id=" + test_id;
+                       }, 1500);
+                   }, error: function () {
+                       window.location.href = "information-change.html?id=" + test_id;
+                   }
+               });
+           }
+        }
+//                当输入框有为空的情况
+        else {
+            function className(className) {
+//                        该输入框为空时
+                if ($(className).val() == "") {
+                    $(className).next("span").html("*不能为空");
+                    setTimeout(function () {
+                        $(className).next("span").html("");
+                    }, 1500)
+                }
+//                        该输入框不为空时
+                else {
+                    $(className).next("span").html("");
+                }
+            }
+            className(".cuS");
+            className("._sex");
+            className(".address_input");
+        }
+    }
+    (function(){
+
+//当页面加载时发起一次ajax请求；
+        var test_id = window.location.href.split("=")[1];
+        var url='/KNERP/a/weixin/getCustUser';
+        $.ajax({
+            type:"post",
+            url:url,
+            data: {"id":test_id},
+            async:true,
+            success:function(data){
+                var dataT=JSON.parse(data);
+                console.log(dataT);
+                var arry="";
+                for(var i=0;i<9;i++){
+                    var area = "area"+(i+1);
+                    var name = area+"Name";
+                    var nameId = area+"Id";
+//                        var tep=dataT[name];
+                    if(!dataT[name]){
+                        break;
+                    }
+                    initIds[area] = dataT[nameId];
+                    console.log(initIds);
+                    arry+=dataT[name];
+                }
+                $("#address_son").html(""+arry+"");
+                $("input[name=custName]").val(dataT.custName).css("color","#aaa");
+                $("input[name=idNumber]").val(dataT.idCardNum).css("color","#aaa");
+                $("#view").css({"background-image":"url("+dataT.photo+")"});
+                $("#photo").val(dataT.photo);
+
+//                判断性别
+                if(dataT.sex==1){
+                    $("#_sex_son>span").html("男");
+                    $("input[name=_sex_input]").val("男");
+                    $("#_sex_son").html("<span _sexId='1'>男</span>");
+                    $(".com_ul>li:first-child").css({"background-color":"rgb(221, 221, 221)"})
+                }
+                else if(dataT.sex==2){
+                    $("#_sex_son>span").html("女");
+                    $("input[name=_sex_input]").val("女");
+                    $("#_sex_son").html("<span _sexId='2'>女</span>");
+                    $(".com_ul>li:nth-child(2)").css({"background-color":"rgb(221, 221, 221)"})
+                }
+                $("input[name=address_input]").val(""+arry+"");
+                //提交
+                $(".row .reading_tijiao").click(function () {
+                    reading()
+                });
+                document.onkeydown = function () {
+                    if (event.keyCode == 13) {
+                        reading()
+                    }
+                };
+            }
+        });
+    })();
+
+    function hide(){
+        $(".com_ul").hide();
+        $(".nav_select ").removeClass("active")
+    }
+    function sheng(parentId) {
+        var url = "/KNERP/a/sys/area/findByParentId";
+        $.ajax({
+            type: "post",
+            url: url,
+            data: {"parentId": parentId},
+            beforeSend: function () {//省请求市请求前的处理
+                insert();
+            },
+            success: function (data) {
+                $(this).prev("div.nav_second").find("span:nth-child(2)").toggleClass("active");//切换箭头方向
+                var name = $("#" + parentId).html();
+                $("#" + parentId).parent().prev().html("<span class='span' nameId='" + parentId + "'>" + name + "</span><span class='ion-chevron-right nav_select'></span>");
+                $("#" + parentId).siblings("li").css({"background-color": "#fff"});
+                $("#" + parentId).css({"background-color": "#ccc"});
+                $("#" + parentId).parent().nextAll("div.nav_second").remove();//父亲后面的div.nav_second全部删除
+                $("#" + parentId).parent().nextAll("ul").remove();//父亲后面的ul全部删除
+                if (data != "") {
+                    $("#" + parentId).parent().slideUp(20);
+                    $(".nav").append("" +
+                    "<div class='nav_second' style='background-color: #fff'>" +
+                    "<span class='span'>请选择</span>" +
+                    "<span class='ion-chevron-right nav_select active'>" +
+                    "</span></div>");
+                    $(".nav").append("  <ul class='com_ul' id='ul_" + parentId + "' ></ul>");
+                    for (var i = 0; i <data.length; i++) {
+                        var str = "<li class='ss" + data[i].id + "' id=" + data[i].id + " onclick='sheng(\"" + data[i].id + "\")'>" + data[i].name + "</li>";
+                        $("#ul_" + parentId).append(str);
+                        $(".FooterFather").hide()
+                    }
+                    insert();
+                }
+                else {
+                    $("#" + parentId).parent().slideUp(20);
+                    $(".nav").append("");
+                    $(".FooterFather").slideDown(500);//当数据请求为空时他弹出地址提交按钮
+                    $(".FooterFather").click(function () {
+                        $("#address_son").html("");
+                        var arr = new Array(9);
+                        for (var i = 0; i < 9; i++) {
+                            arr[i] = {name: "", id: ""};
+                            arr[i].id = $(".span").eq(i).attr("nameId");
+                        }
+                        var arrName = "";
+                        for (var i = 0; i < arr.length; i++) {
+                            arr[i].name = $("span.span").eq(i).html();
+                            if(!arr[i].name){
+                                break;
+                            }
+                            arrName+=arr[i].name
+                        }
+
+                        $("#address_son").html(arrName);//地址栏
+                        $("input[name=address_input]").val(arrName);//地址栏隐藏的输入框
+                        set();
+                        $("#ti_Jiao").addClass("moment_tijiao").removeClass("reading_tijiao");
+                        $(".moment_tijiao").unbind("click").click(function () {
+                            runMessage(arr);
+                        });
+                        document.onkeydown = function () {
+                            if (event.keyCode == 13) {
+                                runMessage(arr);
+                            }
+                        };
+                        function runMessage(areaArray) {
+                            $("input").blur();
+                            var cuS = $("input[name=custName]").val();
+                            var _name=/^[\u4e00-\u9fa5]{2,30}$/;
+                            var address = $("input[name=address_input]").val();
+                            var idNumber = $("input[name=idNumber]").val();
+                            var _sex = $("input[name=_sex_input]").val();
+                            var _sexID=$("#_sex_son span").attr("_sexId");
+                            var a = ( cuS != "" && address != "" && idNumber != ""&& _sex!= "");
+                            //当输入框不为空时
+                            if (a) {
+                                var test_id=window.location.href.split("=")[1];
+                                var data = {
+                                    "custName": cuS, "idCardNum": idNumber, "sex": _sexID,
+                                    "id":test_id,photo:$("#photo").val()
+                                };
+                                for(var i = 0 ; i < areaArray.length;i++){
+                                    var name="area"+(i+1);
+                                    data[name]=areaArray[i].id;
+                                    console.log(data[name]);
+                                }
+
+                                if(_name.test(cuS)==false){
+                                    $("input[name=custName]").next("span").html("姓名只能为2-30个汉字");
+                                    setTimeout(function(){
+                                        $("input[name=custName]").next("span").html("")
+                                    },2000)
+                                }
+                                else{
+                                    $.ajax({
+                                        type: "post",
+                                        url: "/KNERP/a/weixin/updateUser",
+                                        data: data,
+                                        success: function (data) {
+                                            console.log(data);
+                                            $(".tishi").css({"display":"block"});
+                                            setTimeout(function(){
+                                                $(".tishi").css({"display":"none"});
+                                                window.location.href="Personal-information.html?id="+test_id;
+                                            },1500);
+                                        }, error: function () {
+                                            window.location.href = "informaition-change.html?id="+test_id;
+                                        }
+                                    });
+                                }
+
+                            }
+//                          当输入框有为空的情况
+                            else {
+                                function className(className) {
+//                        该输入框为空时
+                                    if ($(className).val() == "") {
+                                        $(className).next("span").html("*不能为空");
+                                        setTimeout(function () {
+                                            $(className).next("span").html("");
+                                        }, 1500)
+                                    }
+//                        该输入框不为空时
+                                    else {
+                                        $(className).next("span").html("");
+                                    }
+                                }
+                                className(".cuS");
+                                className("._sex");
+                                className(".address_input");
+                            }
+                        }
+                        $(".message_wrap").slideUp(500);
+                        $("#main_wrap").slideDown(500);
+                    });
+                    insert();
+                }
+            }
+        });
+    }
+    sheng("1");//页面加载完成时，首先执行一次，读出省份。
+    ( function(){
+
+        $("._sex").click(function(){
+            $(this).next("ul").stop().slideToggle(200)
+        });
+    })();
+
+    function insert() {
+        $(".nav_second").click(function () {
+            $(this).next("ul").stop().slideToggle(500).siblings("ul").slideUp(100);
+//            下拉切换
+            $(this).find("span:nth-child(2)").toggleClass("active");//切换箭头方向
+            $(this).nextAll("div.nav_second").find("span:nth-child(2)").removeClass("active");
+        })
+    }
+
+    //计算主页地址的宽度
+    (function(){
+        var test_id=window.location.href.split("=")[1];
+        $("#main_wrap>span.back").click(function(){
+            window.location.href="Personal-information.html?id="+test_id;
+        });
+        $("#address_son").width($(".address").width() - 160 + "px");
+        $(".address_input").width($(".address_son").width() - 28);
+    })();
+    function set(){
+
+        $(function () {
+
+            $("._sex").next("ul").hide();
+
+            $("._sex").next("ul").find("li").click(function(){
+                $(this).siblings("li").css({"background-color":"#fff"});
+                $(this).css({"background-color":"#ddd"});
+                $(this).parent("ul").slideUp(200);
+                var name_sex=$(this).html();
+                var _sexID=$(this).attr("_sexid");
+                $("._sex_input").val( name_sex);
+                $("._sex_son").html("<span _sexid='"+_sexID+"'>"+ name_sex+"</span>");
+            });
+            $("input[name=idNumber]").blur(function () {
+                var idNumber = $("input[name=idNumber]").val();
+                validateIdCard(idNumber);
+            });
+            $(".back").click(function () {
+                $(".message_wrap").slideUp(500);
+                $("#main_wrap").slideDown(500);
+//                $(".com_ul li").slideUp();
+                hide();
+
+            });//模板的缩放
+
+            $(".message_wrap").hide();
+            //    禁止输入空格
+
+            function inputName(Name) {
+                $(Name).on("focus", function () {
+                    $(this).next("span").html("");
+                });
+            }
+            inputName(".cuS");
+            inputName("._sex");
+            inputName(".address");
+
+            //页面加载完成时#uli1后选项卡全部隐藏
+            $(".address").click(function () {
+                $("#main_wrap").slideUp(500);
+                $(".message_wrap").css({"transition": "all 0.01s liner", "margin-top": "0"}).slideDown(199);
+            });
+        });
+    }
+    set()
+</script>
+</html>

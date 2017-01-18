@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <link rel="stylesheet" href="css/page-common.css">
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css"/>
+    <title></title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html{
+            height: 100%;
+        }
+        body{
+            background: skyblue;
+        }
+        body{
+            height: 100%;
+            position: relative;
+        }
+        .app{
+            height: 100%;
+            position: absolute;
+            display: none;
+            top:0;
+            left:0;
+            right:0;
+            bottom: 0;
+        }
+        .bar{
+            height: 50px;
+            padding: 10px;
+            line-height: 30px;
+            position: relative;
+            z-index: 999;
+        }
+        .main{
+            position: absolute;
+            top:30px;
+            bottom: 0;
+            left:0;
+            right: 0;
+        }
+        .upload-mask{
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            z-index: 2;
+        }
+        .bar{
+            color: white;
+            background: darkslategrey;
+        }
+        .photo-canvas{
+            position: absolute;
+            top:50%;
+            left:50%;
+            border: 1px solid black;
+            -webkit-transform: translate3d(-50%,-50%,0);
+            transform: translate3d(-50%,-50%,0);
+            z-index: 3;
+        }
+        #preview{
+            display: block;
+            z-index: 1;
+        }
+        #previewResult{
+            background: #fff;
+            max-width: 260px;
+            border: 1px solid black;
+        }
+        .preview-box{
+            position: absolute;
+            top:50%;
+            left:50%;
+            -webkit-transform: translate3d(-50%,-50%,0);
+            transform: translate3d(-50%,-50%,0);
+        }
+        body{
+            overflow: hidden;
+        }
+        #getFile{
+            color: #fef4e9;
+            border: solid 1px #da7c0c;
+            background: #f78d1d;
+            vertical-align: middle;
+            padding: 6px 5px;
+            line-height: 1;
+            background: -webkit-gradient(linear, left top, left bottom, from(#faa51a), to(#f47a20));
+            background: -moz-linear-gradient(top, #faa51a, #f47a20);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#faa51a', endColorstr='#f47a20');
+        }
+        #rotateBtn{
+            text-align: center;
+            position: absolute;
+            bottom:15px;
+            left:50%;
+            -webkit-transform: translate3d(-50%,-50%,0);
+            transform: translate3d(-50%,-50%,0);
+            color: white;
+            z-index: 5;
+        }
+        button{
+            width: 140px;
+            line-height: 38px;
+            text-align: center;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 1px 1px 1px #333;
+            border-radius: 5px;
+            margin: 10px 20px;
+            position: relative;
+            overflow: visible;
+        }
+        .button.blue {
+            position: relative;
+             margin-right: 0;
+            border: 1px solid #1e7db9;
+            box-shadow: 0 1px 2px #8fcaee inset,0 -1px 0 #497897 inset,0 -2px 3px #8fcaee inset;
+            background: -webkit-linear-gradient(top,#42a4e0,#2e88c0);
+            background: -moz-linear-gradient(top,#42a4e0,#2e88c0);
+            background: linear-gradient(top,#42a4e0,#2e88c0);
+        }
+        .blue.rarrow:after {
+            box-shadow: 0 1px 0 #8FCAEE inset,-1px 0 0 #497897 inset,-2px 0 0 #8FCAEE inset;
+            background: -webkit-linear-gradient(top left,#42A4E0,#2E88C0);
+            background: -moz-linear-gradient(top left,#42A4E0,#2E88C0);
+            background: linear-gradient(top left,#42A4E0,#2E88C0);
+        }
+        .blue.rarrow:before {
+            background: #1E7DB9;
+        }
+        .rarrow:after {
+            top: 6px;
+            right: -12px;
+            clip: rect(auto auto 26px 2px);
+        }
+      .rarrow:before {
+    width: 27px;
+    height: 27px;
+    top: 6px;
+    right: -13px;
+    clip: rect(auto auto 26px 2px);
+    }
+    .rarrow:after, .rarrow:before, .larrow:after, .larrow:before {
+    position: absolute;
+    content: "";
+    display: block;
+    width: 28px;
+    height: 28px;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    transform: rotate(45deg);
+    }
+        input[type=file]{
+            opacity: 0;
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top:0;
+            left:0;
+        }
+    </style>
+</head>
+<body>
+<button class="button blue rarrow file-input-mask">上传图片<input type="file" id="file" accept="image/*" capture=camera"/></button>
+<img id="previewResult"/>
+<div class="app" id="uploadPage">
+    <div class="bar"><a class="back pull-left" id="closeCrop"><i class="fa fa-reply"></i></a><a id="getFile" class="pull-right">使用</a></div>
+    <div class="main">
+        <canvas class="upload-mask">
+
+        </canvas>
+        <div class="preview-box">
+            <img id="preview"/>
+        </div>
+        <canvas class="photo-canvas">
+
+        </canvas>
+        <a  id="rotateBtn">
+            <i class="fa fa-rotate-right  fa-3x"></i>
+            <div>旋转照片</div>
+        </a>
+    </div>
+</div>
+</body>
+<script src="js/require.js" ></script>
+<script src="js/main.js"></script>
+<script>
+    var myCrop;
+    require(["jquery",'hammer','tomPlugin',"tomLib",'hammer.fake','hammer.showtouch'],function($,hammer,plugin,T){
+        document.addEventListener("touchmove",function(e){
+            e.preventDefault();
+        })
+        //初始化图片大小300*300
+        var opts={cropWidth:300,cropHeight:300},
+                $file=$("#file"),
+                previewStyle={x:0,y:0,scale:1,rotate:0,ratio:1},
+                transform= T.prefixStyle("transform"),
+                $previewResult=$("#previewResult"),
+                $previewBox=$(".preview-box"),
+                $rotateBtn=$("#rotateBtn"),
+                $getFile=$("#getFile"),
+                $preview=$("#preview"),
+                $uploadPage=$("#uploadPage"),
+                $mask=$(".upload-mask"),
+                maskCtx=$mask[0].getContext("2d");
+
+        //这是插件调用主体
+        myCrop=T.cropImage({
+            bindFile:$file,
+            enableRatio:true,//是否启用高清,高清得到的图片会比较大
+            canvas:$(".photo-canvas")[0],  //放一个canvas对象
+            cropWidth:opts.cropWidth,       //剪切大小
+            cropHeight:opts.cropHeight,
+            bindPreview:$preview,      //绑定一个预览的img标签
+            useHammer:true,            //是否使用hammer手势，否的话将不支持缩放
+            oninit:function(){
+
+            },
+            onLoad:function(data){
+                //用户每次选择图片后执行回调
+                resetUserOpts();
+                previewStyle.ratio=data.ratio;
+                $preview.attr("src",data.originSrc).css({width:data.width,height:data.height}).css(transform,'scale('+1/previewStyle.ratio+')');
+                myCrop.setCropStyle(previewStyle)
+            }
+        });
+        function resetUserOpts(){
+            $(".photo-canvas").hammer('reset');
+            previewStyle={scale:1,x:0,y:0,rotate:0};
+            $previewResult.attr("src",'');
+            $preview.attr("src",'')
+        }
+        $(".photo-canvas").hammer({
+            gestureCb:function(o){
+                //每次缩放拖拽的回调
+                $.extend(previewStyle,o);
+                console.log("用户修改图片",previewStyle);
+                $preview.css(transform,"translate3d("+ previewStyle.x+'px,'+ previewStyle.y+"px,0) rotate("+previewStyle.rotate+"deg) scale("+(previewStyle.scale/previewStyle.ratio)+")")
+            }
+        })
+        //选择图片
+        $rotateBtn.on("click",function(){
+            if(previewStyle.rotate==360){
+                previewStyle.rotate=0;
+            }else{
+                previewStyle.rotate+=90;
+            }
+            myCrop.setCropStyle(previewStyle);
+            $preview.css(transform,"translate3d("+ previewStyle.x+'px,'+ previewStyle.y+"px,0) rotate("+previewStyle.rotate+"deg) scale("+(previewStyle.scale/previewStyle.ratio)+")")
+        })
+        //获取图片并关闭弹窗返回到表单界面
+        $getFile.on("click",function(){
+            var src;
+            $uploadPage.hide();
+            myCrop.setCropStyle(previewStyle);
+            //自定义getCropFile({type:"png",background:"red",lowDpi:true})
+            src=myCrop.getCropFile({});
+            $previewResult.attr("src",src);
+            //you can upload new img file :cheers:)
+            console.info('拿到Base64了,传给后台吧？');//src.substr(22)
+            console.info( $previewResult.attr("src",src));
+        });
+        //上传文件按钮&&关闭弹窗按钮
+        $(document).delegate("#file","click",function(){
+            $uploadPage.show();
+        }).delegate("#closeCrop","click",function(){
+            $uploadPage.hide();
+            resetUserOpts();
+            myCrop.setCropStyle(previewStyle)
+        })
+
+        $file.one("click",function(){
+            $uploadPage.show();
+            $mask.prop({width:$mask.width(),height:$mask.height()});
+            maskCtx.fillStyle="rgba(0,0,0,0.7)";
+            maskCtx.fillRect(0,0,$mask.width(),$mask.height());
+            maskCtx.fill();
+            maskCtx.clearRect(($mask.width()-opts.cropWidth)/2,($mask.height()-opts.cropHeight)/2,opts.cropWidth,opts.cropHeight)
+        })
+    })
+</script>
+</html>

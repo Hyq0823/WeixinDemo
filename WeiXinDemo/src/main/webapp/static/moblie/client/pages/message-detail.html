@@ -1,0 +1,110 @@
+<html ng-app="ionicApp">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width ">
+    <title>信息详情</title>
+    <link href="http://www.runoob.com/static/ionic/css/ionic.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="http://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <script src="http://www.runoob.com/static/ionic/js/ionic.bundle.min.js"></script>
+    <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
+    <link href="../css/main.css" rel="stylesheet">
+
+    <style>
+        i{
+            font-size: 24px;
+        }
+        .col-10{
+            text-align: center;
+            padding-right: 15px;
+            padding-bottom: 0;
+        }
+        .bar-header{
+            background-color: #79ae42;
+            color: #fff;
+        }
+        p{
+            margin-bottom:5px !important;
+        }
+        .content{
+            border-bottom: 1px solid #dfdee4;
+        }
+    </style>
+</head>
+<body>
+    <div class="bar bar-header row">
+        <div class="col col-10">
+            <i class="ion-ios-person-outline "></i>
+        </div>
+        <div class="bar bar-header item-input-inset col col-80" style="border: none;padding: 0;height: 35px;margin-top: 3px;">
+            <label class="item-input-wrapper">
+                <i class="icon ion-ios-search placeholder-icon"></i>
+                <input type="search" placeholder="搜索">
+            </label>
+        </div>
+        <div class="col col-10">
+            <i class="ion-ios-more-outline " style="float: right"></i>
+        </div>
+    </div>
+    <form action="" method="post">
+        <div id="results" class="content has-header" style="top: 0px;">
+            <div class="row">
+                <p class="col col-10">单据编号</p>
+                <p class="col col-90">2</p>
+            </div>
+            <div class="row">
+                <p class="col col-10">车主名称</p>
+                <p class="col col-90">2</p>
+            </div>
+            <div class="row">
+                <p class="col col-10">手机号码</p>
+                <p class="col col-90">2</p>
+            </div>
+            <div class="row">
+                <p class="col col-10">手机区域</p>
+                <p class="col col-90">2</p>
+            </div>
+        </div>
+    </form>
+</body>
+<script>
+    function resultsappend(data){
+        var callbackresults;
+        for (var i = 0; i < data.length; i++){
+            callbackresults = callbackresults +
+                '<div class="row">'+
+                    '<p class="col col-10">' + 'data[i].id' + '</p>' +
+                    '<p class="col col-90">' + 'data[i].name' + '</p>' +
+                '</div>' +
+                '<div class="row">'+
+                    '<p class="col col-10">' + 'data[i].id' + '</p>' +
+                    '<p class="col col-90">' + 'data[i].name' + '</p>' +
+                '</div>' +
+                '<div class="row">'+
+                    '<p class="col col-10">' + 'data[i].id' + '</p>' +
+                    '<p class="col col-90">' + 'data[i].name' + '</p>' +
+                '</div>' +
+                '<div class="row">'+
+                    '<p class="col col-10">' + 'data[i].id' + '</p>' +
+                    '<p class="col col-90">' + 'data[i].name' + '</p>' +
+                '</div>'
+        }
+        return callbackresults;
+    }
+    $(function(){
+            var x=$("form").serializeArray();
+
+            console.log(x);
+
+            $.post({
+                url:'/KNERP/a/weixin/bill/billInfo',
+                data: x,
+                type:json,
+                success:function(data){
+                    $("#results").append(resultsappend);
+                }
+            });
+        });
+
+
+</script>
+</html>

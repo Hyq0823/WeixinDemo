@@ -1,0 +1,17 @@
+body{
+    font-family: "Microsoft JhengHei";
+    width: 100%;height:100%;margin: 0 ;padding: 0;overflow: hidden;
+}
+.login_header{
+    height:20px;background-color: #71b32D;
+}
+.fl{
+    float:left;
+}
+.fr{
+    float:right;
+}
+
+.col{
+    padding: 0;
+}

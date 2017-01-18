@@ -1,0 +1,54 @@
+
+/*登陆导航部分*/
+.login_div{
+    height: 30px;
+    margin-bottom: 5px;
+}
+.login_div>div{
+    margin-top: 5px;
+    height:25px;
+}
+.login_div>div img{
+    height:100%;
+}
+.login_div>div:last-child {line-height: 25px;
+    margin-right:10px;
+
+}
+.login_div>div:last-child a{
+    font-size:16px;
+    text-decoration: none;
+    color:#71b32D;
+}
+/*内容*/
+ion-content{
+    padding: 5px;
+    height:80%;
+
+}
+.kl_logo{
+    text-align: center;
+    height:100px;
+
+    margin:0 auto;
+}
+.kl_logo img{
+    height:100%;
+}
+.list img{
+    height:34px;
+}
+
+span a{
+    color:#71b32d;
+    font-size:12px;
+    margin-right: 10px;
+
+}
+.list{margin-bottom: 0}
+.login_button{
+    border-radius: 5px;
+    font-weight: bold;
+    color:white;
+    font-size: 24px;
+}
