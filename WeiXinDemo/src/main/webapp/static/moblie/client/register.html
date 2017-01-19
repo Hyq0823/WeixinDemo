@@ -13,52 +13,14 @@
     <link rel="Bookmark" href="img/pic/logo_green.ico">
     <!--<script type="text/javascript" src="js/ionic.bundle.min.js"></script>-->
     <script src="js/jquery-3.0.0.js"></script>
-    <script type="text/javascript">
-    
-
-    function GetQueryString(name)
-    {
-         var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-         var r = window.location.search.substr(1).match(reg);
-         if(r!=null)return  unescape(r[2]); return null;
-    }
-    
-    var code = GetQueryString("code");
-    var menuType = GetQueryString("menuType");
-    console.log("code: "+code+"   menuType: "+menuType);
-    
-      $.ajax({
-    	  type: "POST",
-    	  url: "http://ougwo57463.java.myjava.wang/Demo/authorization",
-    	  async:false,
-    	  dataType: "json",
-    	  data:{"code":code,"menuType":menuType},
-    	  success:function(result){
-    		  console.log(result.error);
-    		  console.log(result.msg);
-    		  console.log(result.data.openId);
-    		  console.log(result.data.unionId);
-    		  $("#openId").val(result.data.openId);
-    		  $("#unionId").val(result.data.unionId);
-    		  
-    		  window.location.href="http://ougwo57463.java.myjava.wang/Demo/static/moblie/client/pages/message-complete.html?openId="
-    				  +result.data.openId+"&unionId="+result.data.unionId+"phone=18381307126";
-    		 // window.location.href="http://localhost:8080/WeiXinDemo/static/moblie/client/pages/Order-List.html"
-    	  },error:function(result){
-    		  console.log(result);
-    		  alert(result);
-    	  }
-
-      });
-     
-    </script>
+    <script type="text/javascript" src="myjs/my.js"></script>
 </head>
 <body>
 <ion-header-bar class="bar-positive">
     <!--<div class="login_header"></div>-->
     <div class="login_div">
         <div class="fl"><a href="login.html"><img src="img/pic/fanhui.png" alt="上一页"></a></div>
-        <div class="fr"><a href="login.html">登录</a></div>
+        <div class="fr"><a id="a_login" href="login.html">登录</a></div>
     </div>
 </ion-header-bar>
 <ion-content>
