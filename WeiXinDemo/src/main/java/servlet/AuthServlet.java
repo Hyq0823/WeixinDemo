@@ -1,20 +1,18 @@
 package servlet;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
+import constrant.ConstUtils;
+import constrant.SysUtils;
+import demo.WeixinUtils;
+import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.json.JSONObject;
-
-import constrant.ConstUtils;
-import constrant.SysUtils;
-import demo.WeixinUtils;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Servlet implementation class AuthServlet
@@ -83,10 +81,7 @@ public class AuthServlet extends HttpServlet {
             data.put("unionId",unionId);
             
             //如果是注册或绑定登录,直接放行
-            if(WeixinUtils.MENU_BIND_LOGIN.equals(menuType) || WeixinUtils.MENU_REGSTER.equals(menuType)){
-                return SysUtils.getWeixinJson(ConstUtils.WeiXIN_CODE_RELEASE,ConstUtils.WEXIN_MSG_RELEASE, data);
-            }
-            
+
             //已经鉴权过了,放行,返回用户信息
 //            if(union != null && StringUtils.isNotEmpty(union.getCustId())){
 //                unionIdService.updateOpenId(union.getId(),open_id);//TODO　opneId是否需要更新

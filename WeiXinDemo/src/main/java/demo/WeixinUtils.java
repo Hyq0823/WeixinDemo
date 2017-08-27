@@ -1,9 +1,10 @@
 package demo;
+
+import org.json.JSONObject;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-
-import org.json.JSONObject;
 
 
 
@@ -17,12 +18,9 @@ public class WeixinUtils {
 	//==========================================================================================
 	
 	public static final String AUTHTOKEN ="hyq";//接入token
-	public static final String MENU_REGSTER = "register";//注册
-	public static final String MENU_BIND_LOGIN = "bindLogin";//绑定登录
-	public static final String MENU_USER_INFO = "userInfo";//用户信息
-	public static final String MENU_ORDER_HISTORY = "orderHistory";//订单历史
-	public static final String MENU_ORDER_CREATE = "orderCreate";//创建订单
-	
+    public static final String APPID = "wx6656cf304ddb0564";
+    public static final String APPSECRET = "ccad802267356fabec5f90bd3663808e";
+
 	
 	
 	/**
@@ -43,33 +41,9 @@ public class WeixinUtils {
 	        String tmpStr = SHA1(content.toString());
 	        return tmpStr != null ? tmpStr.equalsIgnoreCase(signature) : false;
 	}
-	
-	
-	
-	
-	/**
-	 * 菜单跳转
-	 * @param menuType
-	 * @return
-	 */
-	public static String stepByMenuType(String menuType) {
-		switch (menuType) {
-		case MENU_REGSTER:
-			return "/static/moblie/client/register.html";
-		case MENU_BIND_LOGIN:
-			return "/static/moblie/client/login.html";
-		case MENU_USER_INFO:
-			return "/static/moblie/client/pages/Personal-information.html";
-		case MENU_ORDER_CREATE:
-			return "static/moblie/client/pages/Create-A-order.html";
-		case MENU_ORDER_HISTORY:
-			return "/static/moblie/client/pages/Order-List.html";
-		default: 
-			return "";
-		}
-	}
-	
-	/**
+
+
+    /**
 	 * code换取access_token
 	 * @author hyq
 	 * @param code
@@ -81,9 +55,9 @@ public class WeixinUtils {
 		StringBuffer sbUrl = new StringBuffer();
 		sbUrl.append("https://api.weixin.qq.com/sns/oauth2/access_token")
 			 .append("?")
-			 .append("appid=").append("wx6656cf304ddb0564")
-			 .append("&secret=").append("ccad802267356fabec5f90bd3663808e")
-			 .append("&code=").append(code)
+                .append("appid=").append(APPID)
+                .append("&secret=").append(APPSECRET)
+                .append("&code=").append(code)
 			 .append("&grant_type=").append("authorization_code");
 		String receive = HttpUtils.doGet(sbUrl.toString());
 		JSONObject data = new JSONObject(receive);
@@ -101,9 +75,8 @@ public class WeixinUtils {
 	 * 拉取用户信息
 	 * @author hyq
 	 * @param openid
-	 * @param access_token2
-	 *  https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN 
-	 * @return
+     *  https://api.weixin.qq.com/sns/userinfo?access_token=ACCESS_TOKEN&openid=OPENID&lang=zh_CN
+     * @return
 	 * @throws Exception 
 	 */
 	public static JSONObject access_token4UserInfo(String openid,String access_token) throws Exception {
